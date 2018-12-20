@@ -77,16 +77,16 @@ class Penagihan extends CI_Controller {
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
             'smtp_user' => 'fabinurcahyo@gmail.com',
-			'smtp_pass' => 'fabiituindah8888', 
-			'mailtype'	=> 'html',
-			'charset'   => 'utf-8',
-			'newline'	=> "\r\n",
-	        'wordwrap' => TRUE
+						'smtp_pass' => 'fabiituindah8888', 
+						'mailtype'	=> 'html',
+						'charset'   => 'utf-8',
+						'newline'	=> "\r\n",
+	        	'wordwrap' => TRUE
 		 );
-		 $filename = base_url('assets/upload/telunjuk.png');
-            // Load library email dan konfigurasinya
-			$this->load->library('email');
-			$this->email->initialize($config);
+					$filename = base_url('assets/upload/telunjuk.png');
+									// Load library email dan konfigurasinya
+						$this->load->library('email');
+						$this->email->initialize($config);
             $this->email->attach($output,'application/pdf',$nota,false);
             // Email dan nama pengirim
             $this->email->from('fabinurcahyo@gmail.com','fabi nur cahyo');
