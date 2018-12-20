@@ -10,7 +10,6 @@
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Mockable.php';
 
 $GLOBALS['a']  = 'a';
 $_ENV['b']     = 'b';
@@ -28,7 +27,7 @@ $GLOBALS['i']  = 'i';
  */
 class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {
-    protected $backupGlobalsBlacklist = ['i', 'singleton'];
+    protected $backupGlobalsBlacklist = array('i', 'singleton');
 
     /**
      * Used be testStaticAttributesBackupPre
@@ -188,29 +187,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class);
-
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testExceptionWithEmptyMessage()
-    {
-        $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class, '');
-
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testExceptionWithNullMessage()
-    {
-        $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class, null);
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -221,8 +198,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class);
-        $test->expectExceptionMessage('A runtime error occurred');
+        $test->setExpectedException('RuntimeException', 'A runtime error occurred');
 
         $result = $test->run();
 
@@ -233,8 +209,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithWrongMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class);
-        $test->expectExceptionMessage('A logic error occurred');
+        $test->setExpectedException('RuntimeException', 'A logic error occurred');
 
         $result = $test->run();
 
@@ -249,8 +224,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class);
-        $test->expectExceptionMessageRegExp('/runtime .*? occurred/');
+        $test->setExpectedExceptionRegExp('RuntimeException', '/runtime .*? occurred/');
 
         $result = $test->run();
 
@@ -261,8 +235,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithWrongRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class);
-        $test->expectExceptionMessageRegExp('/logic .*? occurred/');
+        $test->setExpectedExceptionRegExp('RuntimeException', '/logic .*? occurred/');
 
         $result = $test->run();
 
@@ -280,10 +253,9 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithInvalidRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class);
-        $test->expectExceptionMessageRegExp('#runtime .*? occurred/');
+        $test->setExpectedExceptionRegExp('RuntimeException', '#runtime .*? occurred/'); // wrong delimiter
 
-        $test->run();
+        $result = $test->run();
 
         $this->assertEquals(
             "Invalid expected exception message regex given: '#runtime .*? occurred/'",
@@ -294,7 +266,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testNoException()
     {
         $test = new ThrowNoExceptionTestCase('test');
-        $test->expectException(RuntimeException::class);
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -305,7 +277,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testWrongException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(InvalidArgumentException::class);
+        $test->setExpectedException('InvalidArgumentException');
 
         $result = $test->run();
 
@@ -459,7 +431,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
-            'PHPUnit >= 1111111 is required.',
+            'PHPUnit 1111111 (or later) is required.',
             $test->getStatusMessage()
         );
     }
@@ -471,7 +443,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
-            'PHP >= 9999999 is required.',
+            'PHP 9999999 (or later) is required.',
             $test->getStatusMessage()
         );
     }
@@ -511,31 +483,19 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSkipsIfRequiresExtensionWithAMinimumVersion()
-    {
-        $test   = new RequirementsTest('testSpecificExtensionVersion');
-        $result = $test->run();
-
-        $this->assertEquals(
-            'Extension testExt >= 1.8.0 is required.',
-            $test->getStatusMessage()
-        );
-    }
-
     public function testSkipsProvidesMessagesForAllSkippingReasons()
     {
         $test   = new RequirementsTest('testAllPossibleRequirements');
         $result = $test->run();
 
         $this->assertEquals(
-            'PHP >= 99-dev is required.' . PHP_EOL .
-            'PHPUnit >= 9-dev is required.' . PHP_EOL .
+            'PHP 99-dev (or later) is required.' . PHP_EOL .
+            'PHPUnit 9-dev (or later) is required.' . PHP_EOL .
             'Operating system matching /DOESNOTEXIST/i is required.' . PHP_EOL .
             'Function testFuncOne is required.' . PHP_EOL .
             'Function testFuncTwo is required.' . PHP_EOL .
             'Extension testExtOne is required.' . PHP_EOL .
-            'Extension testExtTwo is required.' . PHP_EOL .
-            'Extension testExtThree >= 2.0 is required.',
+            'Extension testExtTwo is required.',
             $test->getStatusMessage()
         );
     }
@@ -586,57 +546,5 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     {
         $o = new ClassWithScalarTypeDeclarations;
         $o->foo(null, null);
-    }
-
-    public function testCreateMockFromClassName()
-    {
-        $mock = $this->createMock(Mockable::class);
-
-        $this->assertInstanceOf(Mockable::class, $mock);
-        $this->assertInstanceOf(PHPUnit_Framework_MockObject_MockObject::class, $mock);
-    }
-
-    public function testCreateMockMocksAllMethods()
-    {
-        /** @var Mockable $mock */
-        $mock = $this->createMock(Mockable::class);
-
-        $this->assertNull($mock->foo());
-        $this->assertNull($mock->bar());
-    }
-
-    public function testCreatePartialMockDoesNotMockAllMethods()
-    {
-        /** @var Mockable $mock */
-        $mock = $this->createPartialMock(Mockable::class, ['foo']);
-
-        $this->assertNull($mock->foo());
-        $this->assertTrue($mock->bar());
-    }
-
-    public function testCreatePartialMockCanMockNoMethods()
-    {
-        /** @var Mockable $mock */
-        $mock = $this->createPartialMock(Mockable::class, []);
-
-        $this->assertTrue($mock->foo());
-        $this->assertTrue($mock->bar());
-    }
-
-    public function testCreateMockSkipsConstructor()
-    {
-        /** @var Mockable $mock */
-        $mock = $this->createMock(Mockable::class);
-
-        $this->assertFalse($mock->constructorCalled);
-    }
-
-    public function testCreateMockDisablesOriginalClone()
-    {
-        /** @var Mockable $mock */
-        $mock = $this->createMock(Mockable::class);
-
-        $cloned = clone $mock;
-        $this->assertFalse($cloned->cloned);
     }
 }

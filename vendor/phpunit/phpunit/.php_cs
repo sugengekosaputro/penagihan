@@ -8,7 +8,6 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->name('*.phpt');
 
 return Symfony\CS\Config\Config::create()
-    ->setUsingCache(true)
     ->level(\Symfony\CS\FixerInterface::NONE_LEVEL)
     ->fixers(
         array(
@@ -29,6 +28,7 @@ return Symfony\CS\Config\Config::create()
             'line_after_namespace',
             'linefeed',
             'list_commas',
+            'long_array_syntax',
             'lowercase_constants',
             'lowercase_keywords',
             'method_argument_space',
@@ -52,7 +52,6 @@ return Symfony\CS\Config\Config::create()
             'remove_lines_between_uses',
             'return',
             'self_accessor',
-            'short_array_syntax',
             'short_tag',
             'single_line_after_imports',
             'single_quote',

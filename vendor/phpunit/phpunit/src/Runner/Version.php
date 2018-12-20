@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use SebastianBergmann\Version;
+
 /**
  * This class defines the current version of PHPUnit.
  *
@@ -30,7 +32,7 @@ class PHPUnit_Runner_Version
         }
 
         if (self::$version === null) {
-            $version       = new SebastianBergmann\Version('5.5.4', dirname(dirname(__DIR__)));
+            $version       = new Version('4.8.36', dirname(dirname(__DIR__)));
             self::$version = $version->getVersion();
         }
 
@@ -45,7 +47,8 @@ class PHPUnit_Runner_Version
     public static function series()
     {
         if (strpos(self::id(), '-')) {
-            $version = explode('-', self::id())[0];
+            $tmp     = explode('-', self::id());
+            $version = $tmp[0];
         } else {
             $version = self::id();
         }
@@ -64,7 +67,7 @@ class PHPUnit_Runner_Version
     /**
      * @return string
      *
-     * @since Method available since Release 4.0.0
+     * @since  Method available since Release 4.0.0
      */
     public static function getReleaseChannel()
     {

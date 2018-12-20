@@ -90,7 +90,7 @@ class PHPUnit_Util_Printer
                 $this->outTarget,
                 tidy_repair_file(
                     $this->outTarget,
-                    ['indent' => true, 'wrap' => 0],
+                    array('indent' => true, 'wrap' => 0),
                     'utf8'
                 )
             );
@@ -104,7 +104,7 @@ class PHPUnit_Util_Printer
      * since the flush() function may close the file being written to, rendering
      * the current object no longer usable.
      *
-     * @since Method available since Release 3.3.0
+     * @since  Method available since Release 3.3.0
      */
     public function incrementalFlush()
     {
@@ -128,7 +128,7 @@ class PHPUnit_Util_Printer
             }
         } else {
             if (PHP_SAPI != 'cli' && PHP_SAPI != 'phpdbg') {
-                $buffer = htmlspecialchars($buffer);
+                $buffer = htmlspecialchars($buffer, ENT_SUBSTITUTE);
             }
 
             print $buffer;
@@ -144,7 +144,7 @@ class PHPUnit_Util_Printer
      *
      * @return bool
      *
-     * @since Method available since Release 3.3.0
+     * @since  Method available since Release 3.3.0
      */
     public function getAutoFlush()
     {
@@ -159,7 +159,7 @@ class PHPUnit_Util_Printer
      *
      * @param bool $autoFlush
      *
-     * @since Method available since Release 3.3.0
+     * @since  Method available since Release 3.3.0
      */
     public function setAutoFlush($autoFlush)
     {
