@@ -5,12 +5,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-            <?php foreach($data as $data){ 
-                  $harga_barang = $data->harga_pelanggan+$data->harga_jual;
-                  $total_harga = $harga_barang * $data->jumlah_order;?>
-              <h2>Daftar <?php if ($data->status_pembayaran=="Lunas"){
-                                    echo " Riwayat ";} ?> 
-                  Penagihan<small>UD.BBB</small>
+              <h2>Daftar Penagihan <small>UD.BBB</small>
               </h2>
               <ul class="nav navbar-right panel_toolbox">
                 
@@ -20,9 +15,7 @@
             <div class="x_content">
               <p class="text-muted font-13 m-b-30">
               <?php echo $this->session->flashdata("success"); ?>
-                <?php if($data->status_pembayaran=="Belum Lunas"){ ?>
                   <a href="<?php echo site_url()?>barang/tambah" class="btn btn-primary"><span class="fa fa-plus">&nbsp</span>Tambah</a>
-                <?php } ?>
               </p>
               
               <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -41,6 +34,9 @@
                   </tr>
                 </thead>
                 <tbody>
+                <?php foreach($data as $data){ 
+                  $harga_barang = $data->harga_pelanggan+$data->harga_jual;
+                  $total_harga = $harga_barang * $data->jumlah_order;?>
                   <tr>
                     <td><?php echo $data->nama_pelanggan; ?></td>
                     <td><?php echo $data->alamat; ?></td>
