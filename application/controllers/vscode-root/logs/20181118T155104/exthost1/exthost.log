@@ -1,0 +1,12 @@
+[2018-11-18 15:51:07.174] [exthost] [info] extension host started
+[2018-11-18 15:51:07.214] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"activationEvent":"*"}
+[2018-11-18 15:51:07.214] [exthost] [info] ExtensionService#loadCommonJSModule /usr/share/code/resources/app/extensions/debug-auto-launch/dist/extension
+[2018-11-18 15:51:07.223] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"activationEvent":"*"}
+[2018-11-18 15:51:07.223] [exthost] [info] ExtensionService#loadCommonJSModule /usr/share/code/resources/app/extensions/emmet/dist/extension
+[2018-11-18 15:51:07.257] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"activationEvent":"*"}
+[2018-11-18 15:51:07.257] [exthost] [info] ExtensionService#loadCommonJSModule /usr/share/code/resources/app/extensions/git/dist/main
+[2018-11-18 15:51:07.465] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"activationEvent":"*"}
+[2018-11-18 15:51:07.466] [exthost] [info] ExtensionService#loadCommonJSModule /usr/share/code/resources/app/extensions/merge-conflict/dist/extension
+[2018-11-18 15:51:07.480] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"activationEvent":"*"}
+[2018-11-18 15:51:07.480] [exthost] [info] ExtensionService#loadCommonJSModule /home/gengsu/.vscode/extensions/pkief.material-icon-theme-3.6.0/out/src/extension
+[2018-11-18 15:51:07.532] [exthost] [info] eager extensions activated
