@@ -97,6 +97,18 @@ class Pelanggan extends CI_Controller {
 		
 	}
 
+	public function harga()
+	{
+		$this->data['content'] = 'pelanggan/harga_pelanggan_view';
+		$this->load->view('layout/main', $this->data);
+	}
+
+	public function tambah_harga()
+	{
+		$this->data['content'] = 'pelanggan/tambah_harga_view';
+		$this->load->view('layout/main', $this->data);
+	}
+
 	public function hapus($id_pelanggan)
 	{
 		$body = [

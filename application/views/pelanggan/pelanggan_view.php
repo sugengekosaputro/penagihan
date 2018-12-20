@@ -26,7 +26,6 @@
                     <th>Alamat</th>
                     <th>Telpon</th>
                     <th>Email</th>
-                    <th>Harga Pelanggan</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -37,10 +36,10 @@
                     <td><?php echo $data->alamat; ?></td>
                     <td><?php echo $data->nomor_telepon ?></td>
                     <td><?php echo $data->email; ?></td>
-                    <td><?php echo $data->harga_pelanggan; ?></td>
                     <td>
+                    <a href="<?php echo site_url('pelanggan/harga/') ?>" class="btn btn-success"><span class="fa fa-edit">&nbsp</span>harga pelanggan</a>
                     <a href="<?php echo site_url('pelanggan/edit/'.$data->id_pelanggan) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Update</a>
-                      <a href="<?php echo site_url('pelanggan/hapus/'.$data->id_pelanggan) ?>" class="btn btn-danger"><span class="fa fa-trash">&nbsp</span>Hapus</a></td>
+                    <a href="<?php echo site_url('pelanggan/hapus/'.$data->id_pelanggan) ?>" class="btn btn-danger"><span class="fa fa-trash">&nbsp</span>Hapus</a></td>
                   </tr>
                 <?php } ?>
                 </tbody>
