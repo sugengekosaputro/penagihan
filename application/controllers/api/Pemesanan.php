@@ -10,7 +10,7 @@ class Pemesanan extends REST_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('pemesanan_model');//
+		$this->load->model('pemesanan_model');//++
 		$this->load->model('barang_model');
 		$this->load->model('pelanggan_model');
 		$this->load->model('pembayaran_model');
