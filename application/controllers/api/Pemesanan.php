@@ -220,7 +220,8 @@ class Pemesanan extends REST_Controller {
 					$arr['query'] = $keyword;
 					$arr['suggestions'][] = array(
 						'value'	=>$row->nama_barang,
-						'id'	=>$row->id_barang
+						'id'	=>$row->id_barang,
+						'harga' =>$row->harga_beli,
 					);
 				}
 		  }

@@ -51,7 +51,7 @@ class Pelanggan extends CI_Controller {
         $response = json_decode($this->guzzle_post(base_url().'api/','pelanggan',$body));
         if($response->status){
         redirect('pelanggan','refresh');
-    }
+    	}
 	}
 
 	public function edit($id)
@@ -97,9 +97,31 @@ class Pelanggan extends CI_Controller {
 		
 	}
 
-	public function harga()
+	public function update_harga_jual()
+	{
+		$id_pelanggan = $this->input->post('id_pelanggan');
+        $body = [
+            [
+                'name' => 'id_master_jual',
+                'contents' => $this->input->post('id_master_jual'),
+            ],
+            [
+                'name' => 'laba',
+                'contents' => $this->input->post('laba'),
+            ],	
+          ];
+			
+			$response = json_decode($this->guzzle_put(base_url().'api/','pelanggan/updateHarga',$body));
+			if($response->status){
+				redirect('pelanggan/harga/'.$id_pelanggan,'refresh');
+			}
+		
+	}
+
+	public function harga($id_pelanggan)
 	{
 		$this->data['content'] = 'pelanggan/harga_pelanggan_view';
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pelanggan/harga/'.$id_pelanggan));
 		$this->load->view('layout/main', $this->data);
 	}
 
@@ -107,6 +129,29 @@ class Pelanggan extends CI_Controller {
 	{
 		$this->data['content'] = 'pelanggan/tambah_harga_view';
 		$this->load->view('layout/main', $this->data);
+	}
+
+	public function simpan_harga()
+	{
+		$id_pelanggan =  $this->input->post('id_pelanggan');
+		$body = [
+            [
+                'name' => 'id_pelanggan',
+                'contents' => $this->input->post('id_pelanggan'),
+            ],
+            [
+                'name' => 'id_barang',
+                'contents' => $this->input->post('id_barang'),
+            ],
+            [
+                'name' => 'laba',
+                'contents' => $this->input->post('laba'),
+            ],
+        ];
+        $response = json_decode($this->guzzle_post(base_url().'api/','pelanggan/harga',$body));
+        if($response->status){
+        redirect('pelanggan/harga/'.$id_pelanggan,'refresh');
+    	}
 	}
 
 	public function hapus($id_pelanggan)
@@ -117,6 +162,17 @@ class Pelanggan extends CI_Controller {
 		$response = json_decode($this->guzzle_delete(base_url().'api/','pelanggan',$body));
 		 if($response->status){
 			redirect('pelanggan','refresh');
+		}
+	}
+
+	public function hapus_harga_jual($id_master_jual,$id_pelanggan)
+	{
+		$body = [
+			'id_master_jual' => $id_master_jual,
+		];
+		$response = json_decode($this->guzzle_delete(base_url().'api/','pelanggan/hargaJual',$body));
+		 if($response->status){
+			redirect('pelanggan/harga/'.$id_pelanggan,'refresh');
 		}
 	}
 
@@ -147,7 +203,7 @@ class Pelanggan extends CI_Controller {
 		}catch(GuzzleHttp\Exception\ClientException $e){
 			$response = $e->getResponse();
 			$responseBodyAsString = $response->getBody()->getContents();
-			redirect('barang','refresh');
+			redirect('pelanggan','refresh');
 		}
 	}
 

@@ -110,6 +110,7 @@
       serviceUrl: site+'/pemesanan/cari_barang',
         onSelect: function (suggestion) {
             $('#id_barang1').val(''+suggestion.id);
+            console.log(suggestion.harga);
         }
     });
 
