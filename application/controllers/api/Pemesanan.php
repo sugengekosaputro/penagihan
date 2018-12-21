@@ -204,7 +204,7 @@ class Pemesanan extends REST_Controller {
 					$arr['query'] = $keyword;
 					$arr['suggestions'][] = array(
 						'value'	=>$row->nama_pelanggan,
-						'id'	=>$row->id_pelanggan
+						'id'	=>$row->id_pelanggan,
 					);
 				 }
 			}
@@ -220,7 +220,8 @@ class Pemesanan extends REST_Controller {
 					$arr['query'] = $keyword;
 					$arr['suggestions'][] = array(
 						'value'	=>$row->nama_barang,
-						'id'	=>$row->id_barang
+						'id'	=>$row->id_barang,
+						'harga_beli' =>$row->harga_beli,
 					);
 				}
 		  }

@@ -165,8 +165,12 @@ class Pemesanan extends CI_Controller {
 	public function getId()
 	{
 		$response = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getid'));
-//		$response = $this->guzzle_get(base_url().'api/','pemesanan/getId');
 		echo json_encode($response);
+	}
+
+	public function getLaba()
+	{
+		
 	}
 
 	public function hapus($id_barang)

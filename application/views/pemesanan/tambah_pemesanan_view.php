@@ -26,11 +26,11 @@
                     </div>
                   </div>
                   <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
-                    <input type="text" name="nama_barang[]" class="form-control has-feedback-left nm_barang1" id="namabarang" placeholder="Nama Barang">
+                    <input type="text" name="nama_barang[]" class="form-control has-feedback-left nm_barang1" id="namabarang1" placeholder="Nama Barang">
                     <span class="fa fa-archive form-control-feedback left" aria-hidden="true"></span>
                   </div>
                   <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-                    <input type="number" name="jumlah_order[]" class="form-control has-feedback-left" id="inputSuccess3" placeholder="Jumlah Order">
+                    <input type="number" name="jumlah_order[]" class="form-control has-feedback-left jumlah_barang1" id="jumlahBarang" placeholder="Jumlah Order">
                     <span class="fa fa-sort-numeric-asc form-control-feedback left" aria-hidden="true"></span>
                   </div>
                 </div>
@@ -54,37 +54,41 @@
         </div>
 
         <div class="col-md-5 col-xs-12">
-          <div class="x_panel">
+        <div class="x_panel">
             <div class="x_title">
-              <h2>Form Rincian <small>Billy Box Bangil</small></h2>
+              <h2>Rincian Order <small>Billy Box Bangil</small></h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
               <br />
               <form class="form-horizontal form-label-left input_mask" id="form">
-                  <!-- hidden input -->
-                  <!-- -->
-                <div id="dynamicField">
-                  <div class="form-group">
-                    <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
-                    
-                  </div>
-                  <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
-                    <input type="text" name="nama_barang[]" class="form-control has-feedback-left nm_barang1" id="namabarang" placeholder="Nama Barang">
-                    <span class="fa fa-archive form-control-feedback left" aria-hidden="true"></span>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-                    <input type="number" name="jumlah_order[]" class="form-control has-feedback-left" id="inputSuccess3" placeholder="Jumlah Order">
-                    <span class="fa fa-sort-numeric-asc form-control-feedback left" aria-hidden="true"></span>
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                    <h4 id="cv"></h4>
                   </div>
                 </div>
-
-                <div class="form-group">
+                <div id="dynamicRincian">
+                  <div class="form-group">
+                    <div class="col-md-4 col-sm-7 col-xs-4 form-group has-feedback">
+                      <h4 id="harga_beli"></h4>
+                    </div>
+                    <div class="col-md-2 col-sm-7 col-xs-2 form-group has-feedback">
+                      <h4 id="laba"></h4>
+                    </div>
+                    <div class="col-md-6 col-sm-7 col-xs-6 form-group has-feedback text-right">
+                      <h4 id="harga"></h4>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="ln_solid"></div>
                 <div class="form-group">
-                  <h4>Total</h4>
+                  <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h3>Total</h3>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h3 id="total"></h3>
+                  </div>
                 </div>
               </form>
             </div>
@@ -99,18 +103,33 @@
   $(function(){
     getIdOrder();
     let i = 1;
+    let total;
+
     var site = "<?php echo site_url();?>";
     $('#namapelanggan').autocomplete({
         serviceUrl: site+'/pemesanan/cari_pelanggan',
         onSelect: function (suggestion) {
-            $('#id_pelanggan').val(''+suggestion.id);
+          $('#id_pelanggan').val(''+suggestion.id);
+          $('#cv').text(suggestion.value);
         }
     });
     $('.nm_barang1').autocomplete({
       serviceUrl: site+'/pemesanan/cari_barang',
         onSelect: function (suggestion) {
-            $('#id_barang1').val(''+suggestion.id);
+          let idbarang = $('#id_pelanggan').val();
+          $('#id_barang1').val(''+suggestion.id);
+          $('#harga_beli').text(suggestion.harga_beli);
+          $('#laba').text(idbarang);
         }
+    });
+
+    $('.jumlah_barang1').on('change', function () {
+      let jumlah = $(this).val();
+      let hrg_beli = $('#harga_beli').text();
+      let harga = jumlah * parseInt(hrg_beli);
+      total = harga;
+      $('#harga').text(harga);
+      $('#total').text(total);
     });
 
     $('#tambahLagi').on('click', function () {
@@ -123,7 +142,7 @@
             "<span class='fa fa-archive form-control-feedback left' aria-hidden='true'></span>"+
           "</div>"+
           "<div class='col-md-4 col-sm-4 col-xs-12 form-group has-feedback'>"+
-            "<input type='number' name='jumlah_order[]' class='form-control has-feedback-left' id='inputSuccess3' placeholder='Jumlah Order'>"+
+            "<input type='number' name='jumlah_order[]' class='form-control has-feedback-left jumlah_barang"+i+"' id='jumlahBarang' placeholder='Jumlah Order'>"+
             "<span class='fa fa-sort-numeric-asc form-control-feedback left' aria-hidden='true'></span>"+
           "</div>"+
           "<div class='col-md-1 col-sm-1 col-xs-12 form-group'>"+
@@ -131,9 +150,22 @@
           "</div>"+
         "</div>"
       );
-    });
+      $('#dynamicRincian').append(
+        '<div id="rowRincian'+i+'">'+
+          '<div class="form-group">'+
+            '<div class="col-md-4 col-sm-7 col-xs-4 form-group has-feedback">'+
+              '<h4 id="harga_beli'+i+'"></h4>'+
+            '</div>'+
+            '<div class="col-md-2 col-sm-7 col-xs-2 form-group has-feedback">'+
+              '<h4 id="laba'+i+'"></h4>'+
+            '</div>'+
+            '<div class="col-md-6 col-sm-7 col-xs-6 form-group has-feedback text-right">'+
+              '<h4 id="harga'+i+'"></h4>'+
+            '</div>'+
+          '</div>'+
+        '</div>'
+      );
 
-    $(document).on('click','#namabarang',function () {
       let id = $(this).attr('idrow');
       
       var site = "<?php echo site_url();?>";
@@ -141,13 +173,25 @@
         serviceUrl: site+'/pemesanan/cari_barang',
           onSelect: function (suggestion) {
               $('#id_barang'+i+'').val(''+suggestion.id);
+              $('#harga_beli'+i+'').text(suggestion.harga_beli);
           }
+      });
+
+      $('.jumlah_barang'+i+'').on('change', function () {
+        let jumlah = $(this).val();
+        let hrg_beli = $('#harga_beli'+i+'').text();
+        let harga = jumlah * parseInt(hrg_beli);
+        total += harga;
+        $('#harga'+i+'').text(harga);
+        console.log(jumlah);
+        $('#total').text(total);
       });
     });
 
     $(document).on('click','.btn-remove', function () {
       let button_id = $(this).attr('id');
       $('#row'+button_id+'').remove();
+      $('#rowRincian'+button_id+'').remove();
     });
 
     $('#simpan').on('click', function () {
@@ -160,11 +204,11 @@
         async: true,
         dataType: 'json',
         success: function (res){
-          //if(res.status){
-//            window.location.href = "<?php //echo site_url('pemesanan') ?>"
+          if(res.status){
+           window.location.href = "<?php echo site_url('pemesanan') ?>"
             alert(res.message);
             console.log(res);
-          //}
+          }
         },
         error: function (err) {console.log(err);}
       });
