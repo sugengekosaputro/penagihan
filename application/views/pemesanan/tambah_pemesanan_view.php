@@ -16,7 +16,7 @@
                   <!-- hidden input -->
                   <input type="text" name="id_order" id="id_order" hidden>
                   <input type="text" name="id_pelanggan" id="id_pelanggan" hidden>
-                  <input type="text" name="id_barang[]" id="id_barang1" hidden> 
+                  <!-- <input type="text" name="id_barang[]" id="id_barang1" hidden>  -->
                   <!-- -->
                 <div id="dynamicField">
                   <div class="form-group">
@@ -25,19 +25,19 @@
                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                  <!-- <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
                     <input type="text" name="nama_barang[]" class="form-control has-feedback-left nm_barang1" id="namabarang1" placeholder="Nama Barang">
                     <span class="fa fa-archive form-control-feedback left" aria-hidden="true"></span>
                   </div>
                   <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
                     <input type="number" name="jumlah_order[]" class="form-control has-feedback-left jumlah_barang1" id="jumlahBarang" placeholder="Jumlah Order">
                     <span class="fa fa-sort-numeric-asc form-control-feedback left" aria-hidden="true"></span>
-                  </div>
+                  </div> -->
                 </div>
 
                 <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
-                  <button type="button" class="btn btn-warning" id="tambahLagi"><span class="fa fa-plus">&nbsp</span>Tambah Lagi</button>
+                  <button type="button" class="btn btn-warning" id="tambahPesanan"><span class="fa fa-plus">&nbsp</span>Tambah Pesanan</button>
                   </div>
                 </div>
 
@@ -64,21 +64,11 @@
               <form class="form-horizontal form-label-left input_mask" id="form">
                 <div class="form-group">
                   <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                    <h4 id="cv"></h4>
+                    <h2 id="cv"></h2>
                   </div>
                 </div>
                 <div id="dynamicRincian">
-                  <div class="form-group">
-                    <div class="col-md-4 col-sm-7 col-xs-4 form-group has-feedback">
-                      <h4 id="harga_beli"></h4>
-                    </div>
-                    <div class="col-md-2 col-sm-7 col-xs-2 form-group has-feedback">
-                      <h4 id="laba"></h4>
-                    </div>
-                    <div class="col-md-6 col-sm-7 col-xs-6 form-group has-feedback text-right">
-                      <h4 id="harga"></h4>
-                    </div>
-                  </div>
+                
                 </div>
 
                 <div class="ln_solid"></div>
@@ -102,7 +92,8 @@
 <script type="text/javascript">
   $(function(){
     getIdOrder();
-    let i = 1;
+    countHarga(200,3);
+    let i = 0;
     let total;
 
     var site = "<?php echo site_url();?>";
@@ -113,33 +104,16 @@
           $('#cv').text(suggestion.value);
         }
     });
-    $('.nm_barang1').autocomplete({
-      serviceUrl: site+'/pemesanan/cari_barang',
-        onSelect: function (suggestion) {
-          let idbarang = $('#id_pelanggan').val();
-          $('#id_barang1').val(''+suggestion.id);
-          $('#harga_beli').text(suggestion.harga_beli);
-          $('#laba').text(idbarang);
-        }
-    });
 
-    $('.jumlah_barang1').on('change', function () {
-      let jumlah = $(this).val();
-      let hrg_beli = $('#harga_beli').text();
-      let harga = jumlah * parseInt(hrg_beli);
-      total = harga;
-      $('#harga').text(harga);
-      $('#total').text(total);
-    });
-
-    $('#tambahLagi').on('click', function () {
+    $('#tambahPesanan').on('click', function () {
       i++;
       $('#dynamicField').append(
-        "<div id='row"+i+"'>"+
+        "<div id='row' class='row"+i+"' index='"+i+"'>"+
           "<input type='text' name='id_barang[]' id='id_barang"+i+"' hidden>"+ 
           "<div class='col-md-7 col-sm-7 col-xs-12 form-group has-feedback'>"+
             "<input type='text' idrow='"+i+"' name='nama_barang[]' class='form-control has-feedback-left nm_barang"+i+"' id='namabarang' placeholder='Nama Barang'>"+
             "<span class='fa fa-archive form-control-feedback left' aria-hidden='true'></span>"+
+            "<a href='#' class='alert-link link"+i+"'>ganti</a>"+
           "</div>"+
           "<div class='col-md-4 col-sm-4 col-xs-12 form-group has-feedback'>"+
             "<input type='number' name='jumlah_order[]' class='form-control has-feedback-left jumlah_barang"+i+"' id='jumlahBarang' placeholder='Jumlah Order'>"+
@@ -165,32 +139,37 @@
           '</div>'+
         '</div>'
       );
+      $('#tambahPesanan').html('<span class="fa fa-plus">&nbsp</span>Tambah Lagi');
+    });
 
-      let id = $(this).attr('idrow');
-      
+    $(document).on('click','#row', function () {
+      const id = $(this).attr('index');
       var site = "<?php echo site_url();?>";
-      $('.nm_barang'+i+'').autocomplete({
+      $('.nm_barang'+id+'').autocomplete({
         serviceUrl: site+'/pemesanan/cari_barang',
           onSelect: function (suggestion) {
-              $('#id_barang'+i+'').val(''+suggestion.id);
-              $('#harga_beli'+i+'').text(suggestion.harga_beli);
+              $('#id_barang'+id+'').val(''+suggestion.id);
+              $('#harga_beli'+id+'').text(suggestion.harga_beli);
           }
       });
 
-      $('.jumlah_barang'+i+'').on('change', function () {
-        let jumlah = $(this).val();
-        let hrg_beli = $('#harga_beli'+i+'').text();
-        let harga = jumlah * parseInt(hrg_beli);
-        total += harga;
-        $('#harga'+i+'').text(harga);
-        console.log(jumlah);
-        $('#total').text(total);
+      $('.link'+id+'').on('click', function () {
+        $('.nm_barang'+id+'').val('').focus();
+        $('.jumlah_barang'+id+'').val('');
+      });
+
+      $('.row'+id+'').on('change',function(){
+        let jumlah = $('.jumlah_barang'+id+'').val();
+        let hrg_beli = $('#harga_beli'+id+'').text();
+        let harga = countHarga(jumlah,hrg_beli);
+        $('#harga'+id+'').text(harga);
+//        alert('ada yang berubah ke - '+id);
       });
     });
 
     $(document).on('click','.btn-remove', function () {
       let button_id = $(this).attr('id');
-      $('#row'+button_id+'').remove();
+      $('.row'+button_id+'').remove();
       $('#rowRincian'+button_id+'').remove();
     });
 
@@ -212,6 +191,7 @@
         },
         error: function (err) {console.log(err);}
       });
+//      alert(data);
     });
 
     function getIdOrder() {
@@ -229,6 +209,11 @@
           console.log(res);
         }
       });
+    }
+
+    function countHarga(jumlah,harga_beli){
+      const total = jumlah * harga_beli;
+      return total;
     }
   });
 </script>
