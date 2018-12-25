@@ -19,10 +19,22 @@ class Pemesanan extends CI_Controller {
 	}
 
   public function riwayat()
-  {
+  	{
 		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/riwayat'));
 		$this->data['content'] = 'pemesanan/riwayat_view';
     $this->load->view('layout/main', $this->data);
+	}
+
+	public function detail()
+	{
+		$this->data['content'] = 'pemesanan/detail_view';
+		$this->load->view('layout/main', $this->data);
+	}
+
+	public function surat_jalan()
+	{
+		$this->data['content'] = 'pemesanan/surat_jalan_view';
+		$this->load->view('layout/main', $this->data);
 	}
 	
 	public function tambah()
