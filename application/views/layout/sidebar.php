@@ -3,12 +3,8 @@
   <div class="menu_section">
     <h3>General</h3>
     <ul class="nav side-menu">
-      <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <li><a href="index.html">Dashboard</a></li>
-          <li><a href="index2.html">Dashboard2</a></li>
-          <li><a href="index3.html">Dashboard3</a></li>
-        </ul>
+    <li><a href="<?php echo base_url('home')?>"><i class="fa fa-home"></i>
+          Home<span class="label label-success pull-right"></span></a>
       </li>
       <li><a><i class="fa fa-edit"></i> Barang <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
@@ -30,6 +26,9 @@
       </li>
       <li><a href="<?php echo base_url('pelanggan')?>"><i class="fa fa-bar-chart-o"></i>
           Pelanggan<span class="label label-success pull-right"></span></a>
+      </li>
+      <li><a href="<?php echo base_url('user')?>"><i class="fa fa-bar-chart-o"></i>
+          User<span class="label label-success pull-right"></span></a>
       </li>
       <li><a><i class="fa fa-clone"></i>MASTER LAYOUT<span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">

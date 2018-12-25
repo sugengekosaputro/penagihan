@@ -37,7 +37,7 @@
                     <a href="<?php echo site_url('user/edit/'.$data->id_user) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Update</a>
                       <a href="<?php echo site_url('user/hapus/'.$data->id_user) ?>" class="btn btn-danger"><span class="fa fa-trash">&nbsp</span>Hapus</a></td>
                   </tr>
-                <?php } ?>
+                <?php }?>
                 </tbody>
               </table>
             </div>
