@@ -25,14 +25,6 @@
                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
                   </div>
-                  <!-- <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
-                    <input type="text" name="nama_barang[]" class="form-control has-feedback-left nm_barang1" id="namabarang1" placeholder="Nama Barang">
-                    <span class="fa fa-archive form-control-feedback left" aria-hidden="true"></span>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-                    <input type="number" name="jumlah_order[]" class="form-control has-feedback-left jumlah_barang1" id="jumlahBarang" placeholder="Jumlah Order">
-                    <span class="fa fa-sort-numeric-asc form-control-feedback left" aria-hidden="true"></span>
-                  </div> -->
                 </div>
 
                 <div class="form-group">
@@ -45,7 +37,7 @@
                 <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <a class="btn btn-primary" href="<?php echo base_url('pemesanan'); ?>" type="button">Kembali</a>
-                    <input type="button" class="btn btn-success" id="simpan" value="Simpan"/>
+                    <input type="submit" class="btn btn-success" id="simpan" value="Simpan"/>
                   </div>
                 </div>
               </form>
@@ -95,6 +87,7 @@
     countHarga(200,3);
     let i = 0;
     let total;
+    let id_plg,id_brg;
 
     var site = "<?php echo site_url();?>";
     $('#namapelanggan').autocomplete({
@@ -102,6 +95,7 @@
         onSelect: function (suggestion) {
           $('#id_pelanggan').val(''+suggestion.id);
           $('#cv').text(suggestion.value);
+          id_plg = suggestion.id;
         }
     });
 
@@ -124,16 +118,17 @@
           "</div>"+
         "</div>"
       );
+
       $('#dynamicRincian').append(
         '<div id="rowRincian'+i+'">'+
           '<div class="form-group">'+
-            '<div class="col-md-4 col-sm-7 col-xs-4 form-group has-feedback">'+
-              '<h4 id="harga_beli'+i+'"></h4>'+
+            '<div class="col-md-6 col-sm-4 col-xs-4 form-group has-feedback">'+
+              '<h4 id="harga_beli'+i+'"></h4>'+'<h6 id="satuan'+i+'"></h6>'+
             '</div>'+
-            '<div class="col-md-2 col-sm-7 col-xs-2 form-group has-feedback">'+
-              '<h4 id="laba'+i+'"></h4>'+
+            '<div class="col-md-1 col-sm-2 col-xs-2 form-group has-feedback">'+
+              '<h4 id="laba'+i+'"></h4>'+'<h6 id="laba_error'+i+'"></h6>'+
             '</div>'+
-            '<div class="col-md-6 col-sm-7 col-xs-6 form-group has-feedback text-right">'+
+            '<div class="col-md-5 col-sm-6 col-xs-6 form-group has-feedback text-right">'+
               '<h4 id="harga'+i+'"></h4>'+
             '</div>'+
           '</div>'+
@@ -148,8 +143,10 @@
       $('.nm_barang'+id+'').autocomplete({
         serviceUrl: site+'/pemesanan/cari_barang',
           onSelect: function (suggestion) {
-              $('#id_barang'+id+'').val(''+suggestion.id);
-              $('#harga_beli'+id+'').text(suggestion.harga_beli);
+            const ktg = getKategori(id,suggestion.id_kategori);
+            $('#id_barang'+id+'').val(''+suggestion.id);
+            $('#harga_beli'+id+'').text(suggestion.harga_beli);
+            id_brg = suggestion.id;
           }
       });
 
@@ -163,7 +160,7 @@
         let hrg_beli = $('#harga_beli'+id+'').text();
         let harga = countHarga(jumlah,hrg_beli);
         $('#harga'+id+'').text(harga);
-//        alert('ada yang berubah ke - '+id);
+        getLaba(id,id_plg,id_brg);
       });
     });
 
@@ -211,9 +208,48 @@
       });
     }
 
+    function getKategori(id,id_kategori) {
+      $.ajax({
+        type: "ajax",
+        method: "get",
+        url: "<?php echo site_url() ?>api/kategori/"+id_kategori+"",
+        async: true,
+        dataType: "json",
+        success: function (res) {
+          $('#satuan'+id+'').text('/'+res[0].satuan);
+        },
+        error: function(res){
+          console.log(res);
+        }
+      });
+    }
+
+    function getLaba(id,id_plg,id_brg) {
+      $.ajax({
+        type: "get",
+        url: "<?php echo site_url() ?>api/pemesanan/getLaba",
+        data: {
+          'id_barang' : id_brg,
+          'id_pelanggan' : id_plg,
+        },
+        async: true,
+        dataType: "json",
+        success: function (res) {
+          $('#laba'+id+'').text('Rp.'+res[0].laba);
+        },
+        error: function (res) {
+          $('#laba_error'+id+'').html(
+            'Harga Belum Ditentukan<br><a href="<?php echo site_url()?>pelanggan/harga/'+id_plg+'" style="text-decoration:underline">Tentukan Disini</a>');
+          console.log(res);
+        }
+      });
+    }
+
     function countHarga(jumlah,harga_beli){
       const total = jumlah * harga_beli;
       return total;
     }
+
+
   });
 </script>

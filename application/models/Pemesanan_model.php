@@ -23,8 +23,8 @@ class Pemesanan_model extends CI_Model {
 	// 	}
 	// }
 
-	public function tampilPemesanan($tgl)
-	{ 
+	public function tampilPemesananByTgl($tgl)
+	{
 		$this->db->like('id_order',$tgl);
 		$this->db->order_by('log_time','DESC');
 		$query = $this->db->get($this->tb_order);

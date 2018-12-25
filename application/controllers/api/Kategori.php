@@ -5,20 +5,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 
-class Pelanggan extends REST_Controller {
+class Kategori extends REST_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('pelanggan_model');
-		$this->load->model('jual_model');
+		$this->load->model('kategori_model');
 	}
 	
 	public function index_get()
 	{
 		$id = $this->uri->segment(3);
-		$res = $this->pelanggan_model->tampilPelanggan();
-		$resId = $this->pelanggan_model->tampilPelangganById($id);
+		$res = $this->kategori_model->tampilKategori();
+		$resId = $this->kategori_model->tampilKategoriById($id);
 
 		if(empty($id)){
 			if ($res) {
@@ -51,7 +50,7 @@ class Pelanggan extends REST_Controller {
 				'harga_pelanggan' => $this->post('harga_pelanggan'),
 			);
 			
-			$insert = $this->pelanggan_model->insertPelanggan($body);
+			$insert = $this->kategori_model->insertPelanggan($body);
 			if($insert){
 				$this->response([
 					'status' => TRUE,
@@ -77,7 +76,7 @@ class Pelanggan extends REST_Controller {
 			'harga_pelanggan' => $this->post('harga_pelanggan'),
 		);
 
-        $update = $this->pelanggan_model->updatePelanggan($id,$body);
+        $update = $this->kategori_model->updatePelanggan($id,$body);
 		if ($update) {
 			$this->response([
 				'status' => TRUE,
@@ -99,7 +98,7 @@ class Pelanggan extends REST_Controller {
 			'laba' => $this->post('laba'),
 		);
 
-        $update = $this->pelanggan_model->updateHargaJual($id_master_jual,$body);
+        $update = $this->kategori_model->updateHargaJual($id_master_jual,$body);
 		if ($update) {
 			$this->response([
 				'status' => TRUE,
@@ -117,8 +116,8 @@ class Pelanggan extends REST_Controller {
 	public function index_delete()
 	{
 		$id = $this->delete('id_pelanggan');
-		$res = $this->pelanggan_model->tampilPelangganById($id);
-		$delete = $this->pelanggan_model->deletePelanggan($id);
+		$res = $this->kategori_model->tampilPelangganById($id);
+		$delete = $this->kategori_model->deletePelanggan($id);
 		if ($delete) {
 			$this->response([
 				'status' => TRUE,
@@ -136,7 +135,7 @@ class Pelanggan extends REST_Controller {
 	public function harga_get()
 	{
 		$id_pelanggan = $this->uri->segment(4);
-		$res = $this->jual_model->tampilHargaJualById($id_pelanggan);
+		$res = $this->kategori_model->tampilHargaJual($id_pelanggan);
 
 			if ($res) {
 				$this->response($res,REST_Controller::HTTP_OK);
@@ -154,7 +153,7 @@ class Pelanggan extends REST_Controller {
 			'id_barang' => $this->post('id_barang'),
 			'laba' => $this->post('laba'),
 		);
-		$insert = $this->jual_model->insertHargaJual($body);
+		$insert = $this->kategori_model->insertHargaJual($body);
 		if($insert){
 			$this->response([
 				'status' => TRUE,
@@ -171,7 +170,7 @@ class Pelanggan extends REST_Controller {
 	public function hargaJual_delete()
 	{
 		$id_master_jual = $this->delete('id_master_jual');
-		$delete = $this->jual_model->deleteHargaJual($id_master_jual);
+		$delete = $this->kategori_model->deleteHargaJual($id_master_jual);
 		if ($delete) {
 			$this->response([
 				'status' => TRUE,
@@ -186,3 +185,5 @@ class Pelanggan extends REST_Controller {
 	}
 
 }
+
+/* End of file User.php */

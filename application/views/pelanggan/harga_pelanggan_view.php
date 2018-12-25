@@ -16,7 +16,7 @@
             </div>
             <div class="x_content">
               <p class="text-muted font-13 m-b-30">
-                  <a href="<?php echo site_url('pelanggan/tambah_harga/').$this->uri->segment(3)?>" class="btn btn-primary"><span class="fa fa-plus">&nbsp</span>Tambah</a>
+                <a href="<?php echo site_url('pelanggan/tambah_harga/').$this->uri->segment(3)?>" class="btn btn-primary"><span class="fa fa-plus">&nbsp</span>Tambah</a>
               </p>
               <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
