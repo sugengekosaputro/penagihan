@@ -19,11 +19,10 @@
               <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
                   <tr>
+                    <th>ID Order</th>
                     <th>Nama Pelanggan</th>
                     <th>Nama Barang</th>
                     <th>Alamat</th>
-                    <th>Telpon</th>
-                    <th>Jumlah Order</th>
                     <th>Tanggal Order</th>
                     <th>Total Kirim</th>
                     <th>Aksi</th>

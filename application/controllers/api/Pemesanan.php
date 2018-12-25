@@ -15,12 +15,14 @@ class Pemesanan extends REST_Controller {
 		$this->load->model('pelanggan_model');
 		$this->load->model('pembayaran_model');
 		$this->load->model('penagihan_model');
+		$this->load->model('kategori_model');
+		$this->load->model('jual_model');
   }
     
 	public function index_get()
 	{
 		$id = $this->uri->segment(3);
-		$res = $this->pemesanan_model->tampilPemesanan();
+//		$res = $this->pemesanan_model->tampilPemesanan();
 		$resId = $this->pemesanan_model->tampilPemesananById($id);
 		if(empty($id)){
 			if ($res) {
@@ -46,7 +48,7 @@ class Pemesanan extends REST_Controller {
 	public function getId_get()
 	{
 		$tgl = date('ymd');
-		$res = $this->pemesanan_model->tampilPemesanan($tgl);
+		$res = $this->pemesanan_model->tampilPemesananByTgl($tgl);
 		if ($res) {
 			$jumlah = count($res);
 			$digit = strlen((string)$jumlah);
@@ -70,6 +72,22 @@ class Pemesanan extends REST_Controller {
 			$digitAkhir = '001';
 			$kode = $tgl.$digitAkhir;
 			$this->response($kode,REST_Controller::HTTP_OK);
+		}
+	}
+
+	public function getLaba_get()
+	{
+		$id_barang = $this->get('id_barang');
+		$id_pelanggan = $this->get('id_pelanggan');
+		$res = $this->jual_model->tampilHargaJualByPelangganBarang($id_pelanggan,$id_barang);
+		
+		if ($res) {
+			$this->response($res,REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Data Tidak Ada'
+			],REST_Controller::HTTP_NOT_FOUND);
 		}
 	}
 
@@ -222,6 +240,7 @@ class Pemesanan extends REST_Controller {
 						'value'	=>$row->nama_barang,
 						'id'	=>$row->id_barang,
 						'harga_beli' =>$row->harga_beli,
+						'id_kategori' =>$row->id_kategori,
 					);
 				}
 		  }
