@@ -72,6 +72,15 @@
                     <h3 id="total"></h3>
                   </div>
                 </div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h5>DP 50%</h5>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h5 id="dp"></h5>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -173,8 +182,11 @@
       arrTotal.push(harga);
       console.log(arrTotal);
       let tot = arrTotal.reduce((a, b) => a + b, 0);
+      let dp = tot * 0.5;
       console.log(tot);
-      $('#total').html('Rp.'+tot);
+      
+      $('#total').html('Rp.'+formatRupiah(tot));
+      $('#dp').html('Rp.'+formatRupiah(dp));
     });
 
 
@@ -271,6 +283,13 @@
     function countHarga(jumlah,harga_beli){
       const totalHarga = jumlah * harga_beli;
       return totalHarga;
+    }
+
+    function formatRupiah(angka){
+      var reverse = angka.toString().split('').reverse().join(''),
+      ribuan = reverse.match(/\d{1,3}/g);
+      ribuan = ribuan.join('.').split('').reverse().join('');
+      return ribuan;
     }
 
   });
