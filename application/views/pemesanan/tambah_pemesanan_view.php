@@ -72,6 +72,15 @@
                     <h3 id="total"></h3>
                   </div>
                 </div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h5>DP 50%</h5>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h5 id="dp"></h5>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
@@ -84,10 +93,9 @@
 <script type="text/javascript">
   $(function(){
     getIdOrder();
-    countHarga(200,3);
+    let arrTotal = [];
     let i = 0;
-    let total;
-    let id_plg,id_brg;
+    let id_plg,id_brg,harga;
 
     var site = "<?php echo site_url();?>";
     $('#namapelanggan').autocomplete({
@@ -107,10 +115,10 @@
           "<div class='col-md-7 col-sm-7 col-xs-12 form-group has-feedback'>"+
             "<input type='text' idrow='"+i+"' name='nama_barang[]' class='form-control has-feedback-left nm_barang"+i+"' id='namabarang' placeholder='Nama Barang'>"+
             "<span class='fa fa-archive form-control-feedback left' aria-hidden='true'></span>"+
-            "<a href='#' class='alert-link link"+i+"'>ganti</a>"+
+            "<a href='#' class='alert-link link_ganti"+i+"'>ganti</a>"+
           "</div>"+
           "<div class='col-md-4 col-sm-4 col-xs-12 form-group has-feedback'>"+
-            "<input type='number' name='jumlah_order[]' class='form-control has-feedback-left jumlah_barang"+i+"' id='jumlahBarang' placeholder='Jumlah Order'>"+
+            "<input type='number' name='jumlah_order[]' class='form-control has-feedback-left jumlah_barang"+i+"' id='jumlahBarang' nomor='"+i+"' placeholder='Jumlah Order'>"+
             "<span class='fa fa-sort-numeric-asc form-control-feedback left' aria-hidden='true'></span>"+
           "</div>"+
           "<div class='col-md-1 col-sm-1 col-xs-12 form-group'>"+
@@ -118,7 +126,7 @@
           "</div>"+
         "</div>"
       );
-
+      
       $('#dynamicRincian').append(
         '<div id="rowRincian'+i+'">'+
           '<div class="form-group">'+
@@ -135,6 +143,7 @@
         '</div>'
       );
       $('#tambahPesanan').html('<span class="fa fa-plus">&nbsp</span>Tambah Lagi');
+      $('#tambahPesanan').addClass('tambahLagi');
     });
 
     $(document).on('click','#row', function () {
@@ -150,24 +159,51 @@
           }
       });
 
-      $('.link'+id+'').on('click', function () {
+      $('.link_ganti'+id+'').on('click', function () {
         $('.nm_barang'+id+'').val('').focus();
         $('.jumlah_barang'+id+'').val('');
       });
 
       $('.row'+id+'').on('change',function(){
+        getLaba(id,id_plg,id_brg);
+        let laba = $('#laba'+id+'').text();
         let jumlah = $('.jumlah_barang'+id+'').val();
         let hrg_beli = $('#harga_beli'+id+'').text();
-        let harga = countHarga(jumlah,hrg_beli);
+        const hrg_jual = parseInt(hrg_beli) + parseInt(laba);
+        harga = countHarga(jumlah,hrg_jual);
+
         $('#harga'+id+'').text(harga);
-        getLaba(id,id_plg,id_brg);
+        console.log(harga);
       });
     });
 
+    $(document).on('change','#jumlahBarang', function () {
+      let button_id = $(this).attr('nomor');
+      arrTotal.push(harga);
+      console.log(arrTotal);
+      let tot = arrTotal.reduce((a, b) => a + b, 0);
+      let dp = tot * 0.5;
+      console.log(tot);
+      
+      $('#total').html('Rp.'+formatRupiah(tot));
+      $('#dp').html('Rp.'+formatRupiah(dp));
+    });
+
+
     $(document).on('click','.btn-remove', function () {
       let button_id = $(this).attr('id');
+      let h = $('#harga'+button_id+'').text();
+
+      arrTotal = arrTotal.filter(e => e !== parseInt(h));
+      console.log(arrTotal);
+
+      let tot = arrTotal.reduce((a, b) => a + b, 0);
+      console.log(tot);
+      $('#total').html('Rp.'+tot);
+
       $('.row'+button_id+'').remove();
       $('#rowRincian'+button_id+'').remove();
+
     });
 
     $('#simpan').on('click', function () {
@@ -188,7 +224,6 @@
         },
         error: function (err) {console.log(err);}
       });
-//      alert(data);
     });
 
     function getIdOrder() {
@@ -235,21 +270,27 @@
         async: true,
         dataType: "json",
         success: function (res) {
-          $('#laba'+id+'').text('Rp.'+res[0].laba);
+          $('#laba'+id+'').text(+res[0].laba);
+          return res[0].laba;
         },
         error: function (res) {
           $('#laba_error'+id+'').html(
             'Harga Belum Ditentukan<br><a href="<?php echo site_url()?>pelanggan/harga/'+id_plg+'" style="text-decoration:underline">Tentukan Disini</a>');
-          console.log(res);
         }
       });
     }
 
     function countHarga(jumlah,harga_beli){
-      const total = jumlah * harga_beli;
-      return total;
+      const totalHarga = jumlah * harga_beli;
+      return totalHarga;
     }
 
+    function formatRupiah(angka){
+      var reverse = angka.toString().split('').reverse().join(''),
+      ribuan = reverse.match(/\d{1,3}/g);
+      ribuan = ribuan.join('.').split('').reverse().join('');
+      return ribuan;
+    }
 
   });
 </script>
