@@ -9,7 +9,7 @@
       <li><a><i class="fa fa-edit"></i> Barang <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?php echo base_URL('barang'); ?>">Daftar Barang</a></li>
-          <li><a href="<?php echo base_URL('barang'); ?>">Stok Gudang</a></li>
+          <li><a href="<?php echo base_URL('barang/stok_barang'); ?>">Stok Gudang</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-desktop"></i> Pemesanan <span class="fa fa-chevron-down"></span></a>

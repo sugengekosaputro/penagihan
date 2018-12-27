@@ -5,6 +5,7 @@ class Barang_model extends CI_Model {
 
 	private $tabel = 'tb_master_barang';
 	private $tb_kategori_barang = 'tb_kategori_barang';
+	private $tb_stok_barang = 'tb_stok_barang';
 	
 	public function tampilBarang()
 	{
@@ -30,6 +31,31 @@ class Barang_model extends CI_Model {
 	public function tampilKategori()
 	{
 		$query = $this->db->get($this->tb_kategori_barang);
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function tampilStok()
+	{
+		$this->db->select('tb_stok_barang.*, tb_master_barang.*');
+		$this->db->join('tb_master_barang','tb_master_barang.id_barang = tb_stok_barang.id_barang');
+		$query = $this->db->get($this->tb_stok_barang);
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function tampilStokById($id_barang)
+	{
+		$this->db->select('tb_stok_barang.*, tb_master_barang.*');
+		$this->db->join('tb_master_barang','tb_master_barang.id_barang = tb_stok_barang.id_barang');
+		$this->db->where('tb_stok_barang.id_barang', $id_barang);
+		$query = $this->db->get($this->tb_stok_barang);
 		if ($query->num_rows() > 0) {
 			return $query->result_array();
 		} else {

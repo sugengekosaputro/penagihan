@@ -40,6 +40,33 @@ class Barang extends REST_Controller {
 		}
 	}
 
+	public function stok_get()
+	{
+		$id_barang = $this->uri->segment(4);
+		$res = $this->barang_model->tampilStok();
+		$resId = $this->barang_model->tampilStokById($id_barang);
+
+		if(empty($id_barang)){
+			if ($res) {
+				$this->response($res,REST_Controller::HTTP_OK);
+			} else {
+				$this->response([
+					'status' => FALSE,
+					'message' => 'Data Tidak Ada'
+				],REST_Controller::HTTP_NOT_FOUND);
+			}
+		}else{
+			if ($resId) {
+				$this->response($resId,REST_Controller::HTTP_OK);
+			} else {
+				$this->response([
+					'status' => FALSE,
+					'message' => 'Data Tidak Ada'
+				],REST_Controller::HTTP_NOT_FOUND);
+			}
+		}
+	}
+
 	public function kategori_get()
 	{
 		$res = $this->barang_model->tampilKategori();

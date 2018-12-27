@@ -13,9 +13,16 @@ class Barang extends CI_Controller {
 	}
 
   public function index()
-  {
+  	{
 		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','barang'));
     $this->load->view('layout/main', $this->data);
+	}
+
+	public function stok_barang()
+  	{
+		$this->data['content'] = 'barang/stok_barang_view';
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','barang/stok'));
+    	$this->load->view('layout/main', $this->data);
 	}
 
 	public function barang()

@@ -49,7 +49,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="<?php echo base_url('home') ?>" class="site_title"><img height="60px" width="100px" src="<?php echo base_url('assets/images/logobilly.png') ?>"/> <span> </span></a>
+              <a href="<?php echo base_url('home') ?>" class="site_title"><img height="40px" width="50px" src="<?php echo base_url('assets/images/udbbbicon.png') ?>"/> <span>Billy Box Bangil</span></a>
             </div>
 
             <div class="clearfix"></div>
