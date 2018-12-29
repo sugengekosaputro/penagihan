@@ -4,7 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Pemesanan extends CI_Controller {
 
 	public $data = array(
-		'content' => 'pemesanan/pemesanan_view'
+		'content' => 'pemesanan/pemesanan_view',
+		'lipemesanan' => 'active',
+		'ulpemesanan' => 'display:block',
+		'lidaftarpesanan' => 'active'
 	);
 
 	public function __construct()

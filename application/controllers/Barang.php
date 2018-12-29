@@ -4,7 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Barang extends CI_Controller {
 
 	public $data = array(
-		'content' => 'barang/barang_view'
+		'content' => 'barang/barang_view',
+		'libarang' => 'active',
+		'ulbarang' => 'display:block',
+		'lidaftarbarang' => 'active'
+
 	);
 
   public function __construct()

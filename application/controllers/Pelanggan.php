@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Pelanggan extends CI_Controller {
 
 	public $data = array(
-		'content' => 'pelanggan/pelanggan_view'
+		'content' => 'pelanggan/pelanggan_view',
+		'lipelanggan' => 'active'
 	);
 
     public function __construct()

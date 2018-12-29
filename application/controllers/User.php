@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User extends CI_Controller {
 
 	public $data = array(
-		'content' => 'user/index_view'
+		'content' => 'user/index_view',
+		'liuser' => 'active'
 	);
 
     public function __construct()
