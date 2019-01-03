@@ -81,7 +81,7 @@
                   </div>
                 </div>
                 <div id="dynamicRincian">
-                ++-
+                ++--
                 </div>
 
                 <div class="ln_solid"></div>
