@@ -18,11 +18,12 @@
                   <input type="text" name="id_pelanggan" id="id_pelanggan" hidden>
                   <!-- <input type="text" name="id_barang[]" id="id_barang1" hidden>  -->
                   <!-- -->
-                <div id="dynamicField">
+                <div id="dynamicForm">
                   <div class="form-group">
                     <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback validasi_pelanggan">
-                      <input type="text" name="nama_pelanggan" class="form-control has-feedback-left" id="namapelanggan" placeholder="Nama Pelanggan">
+                      <input type="text" name="nama_pelanggan" class="form-control has-feedback-left" id="namaPelanggan" placeholder="Nama Pelanggan">
                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                      <h5 class="warningPelanggan" hidden><span class="fa fa-warning text-danger"> Harus Diisi</span></h5>
                     </div>
                   </div>
                 </div>
@@ -30,6 +31,16 @@
                 <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
                   <button type="button" class="btn btn-warning" id="tambahPesanan"><span class="fa fa-plus">&nbsp</span>Tambah Pesanan</button>
+                  <button type="button" class="btn btn-default" id="reset"><span class="fa fa-trash">&nbsp</span>Reset</button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-9 col-sm-9 col-xs-12">
+                    <div class="form-check form-check-inline">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="cekdp" id="cekdp"> DP Sudah Dibayar
+                      </label>
+                    </div>
                   </div>
                 </div>
 
@@ -37,7 +48,7 @@
                 <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <a class="btn btn-primary" href="<?php echo base_url('pemesanan'); ?>" type="button">Kembali</a>
-                    <input type="submit" class="btn btn-success disabled" id="simpan" value="Simpan"/>
+                    <input type="submit" class="btn btn-success" id="simpan" value="Simpan" disabled/>
                   </div>
                 </div>
               </form>
@@ -59,8 +70,8 @@
                     <h2 id="cv"></h2>
                   </div>
                 </div>
-                <div id="dynamicRincian">
-                
+
+                <div id="dynamicRincian">                
                 </div>
 
                 <div class="ln_solid"></div>
@@ -92,13 +103,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(function(){
+
     getIdOrder();
+    $('#namaPelanggan').focus();
     let arrTotal = [];
-    let i = 0;
+    var i = 0;
     let id_plg,id_brg,harga;
 
     var site = "<?php echo site_url();?>";
-    $('#namapelanggan').autocomplete({
+    $('#namaPelanggan').autocomplete({
         serviceUrl: site+'/pemesanan/cari_pelanggan',
         onSelect: function (suggestion) {
           $('#id_pelanggan').val(''+suggestion.id);
@@ -108,28 +121,32 @@
     });
 
     $('#tambahPesanan').on('click', function () {
-      i++;
       let validate = '';
-      let nama_pelanggan = $('#namapelanggan').val();
+      let nama_pelanggan = $('#namaPelanggan').val();
+
       if(nama_pelanggan == ''){
-        $('#dynamicField').find('.validasi_pelanggan').addClass('has-error');
+        $('#dynamicForm').find('.validasi_pelanggan').addClass('has-error');
+        $('#dynamicForm').find('.warningPelanggan').removeAttr('hidden');
+        $('#namaPelanggan').focus();
       }else{
-        $('#dynamicField').find('.validasi_pelanggan').removeClass('has-error').addClass('has-success');
+        $('#dynamicForm').find('.validasi_pelanggan').removeClass('has-error');
+        $('#dynamicForm').find('.warningPelanggan').attr('hidden',true);
+        $('#namaPelanggan').attr('readonly', true);
         validate += '1';
       }
 
       if(validate == '1'){
-        $('#dynamicField').append(
-          "<div id='row' class='row"+i+"' index='"+i+"'>"+
+        i++;
+        $('#dynamicForm').append(
+          "<div id='rowForm' class='rowForm"+i+"' index='"+i+"'>"+
             "<input type='text' name='id_barang[]' id='id_barang"+i+"' hidden>"+ 
-            "<div class='col-md-7 col-sm-7 col-xs-12 form-group has-feedback'>"+
-              "<input type='text' idrow='"+i+"' name='nama_barang[]' class='form-control has-feedback-left nm_barang"+i+"' id='namabarang' placeholder='Nama Barang'>"+
-              "<span class='fa fa-archive form-control-feedback left' aria-hidden='true'></span>"+
-              "<a href='#' class='alert-link link_ganti"+i+"'>ganti</a>"+
+            "<div class='col-md-8 col-sm-8 col-xs-12 form-group has-feedback'>"+
+              "<input type='text' name='nama_barang[]' class='form-control nm_barang"+i+"' id='namaBarang'>"+
+              "<label id='label"+i+"'>Nama Barang</label>"+
             "</div>"+
-            "<div class='col-md-4 col-sm-4 col-xs-12 form-group has-feedback'>"+
-              "<input type='number' name='jumlah_order[]' class='form-control has-feedback-left jumlah_barang"+i+"' id='jumlahBarang' nomor='"+i+"' placeholder='Jumlah Order'>"+
-              "<span class='fa fa-sort-numeric-asc form-control-feedback left' aria-hidden='true'></span>"+
+            "<div class='col-md-3 col-sm-3 col-xs-12 form-group has-feedback'>"+
+              "<input type='number' name='jumlah_order[]' class='form-control jml_barang"+i+" jumlah' id='jumlahBarang' nomor='"+i+"' disabled>"+
+              "<label>Jumlah Order</label>"+
             "</div>"+
             "<div class='col-md-1 col-sm-1 col-xs-12 form-group'>"+
               "<button type='button' id='"+i+"' class='btn btn-danger btn-sm btn-remove'><span class='fa fa-close'></span></button>"+
@@ -138,7 +155,7 @@
         );
         
         $('#dynamicRincian').append(
-          '<div id="rowRincian'+i+'">'+
+          '<div id="rowRincian" class="rowRincian'+i+'" index="'+i+'">'+
             '<div class="form-group">'+
               '<div class="col-md-6 col-sm-4 col-xs-4 form-group has-feedback">'+
                 '<h4 id="harga_beli'+i+'"></h4>'+'<h6 id="satuan'+i+'"></h6>'+
@@ -147,82 +164,89 @@
                 '<h4 id="laba'+i+'"></h4>'+'<h6 id="laba_error'+i+'"></h6>'+
               '</div>'+
               '<div class="col-md-5 col-sm-6 col-xs-6 form-group has-feedback text-right">'+
-                '<h4 id="harga'+i+'"></h4>'+
+                '<h4 id="harga'+i+'" class="hrg"></h4>'+
               '</div>'+
             '</div>'+
           '</div>'
         );
         $('#tambahPesanan').html('<span class="fa fa-plus">&nbsp</span>Tambah Lagi');
-        $('#tambahPesanan').addClass('tambahLagi');
-
-        console.log('tambah row ke - '+i);
+        $('#tambahPesanan').addClass('tambahLagi').attr('disabled',true);
       }
+      $('#simpan').attr('disabled',true);
     });
 
-    $(document).on('click','#row', function () {
-      const id = $(this).attr('index');
-      var site = "<?php echo site_url();?>";
-      $('.nm_barang'+id+'').autocomplete({
+    $(this).on('click','#rowForm', function () {
+      let index = $(this).attr('index');
+      let nama_barang = $('.nm_barang'+index+'').val();
+      let jumlah_barang = $('.jml_barang'+index+'').val();
+
+      $('.nm_barang'+index+'').autocomplete({
         serviceUrl: site+'/pemesanan/cari_barang',
           onSelect: function (suggestion) {
-            const ktg = getKategori(id,suggestion.id_kategori);
-            $('#id_barang'+id+'').val(''+suggestion.id);
-            $('#harga_beli'+id+'').text(suggestion.harga_beli);
+            const ktg = getKategori(index,suggestion.id_kategori);
+            $('#id_barang'+index+'').val(''+suggestion.id);
+            $('#harga_beli'+index+'').text(suggestion.harga_beli);
             id_brg = suggestion.id;
+            getLaba(index,id_plg,id_brg);
+            $('.rowForm'+index+'').find('.jml_barang'+index+'').removeAttr('disabled').focus();
+            $('.rowForm'+index+'').find('.nm_barang'+index+'').attr('readonly','readonly');
           }
       });
 
-      $('.link_ganti'+id+'').on('click', function () {
-        $('.nm_barang'+id+'').val('').focus();
-        $('.jumlah_barang'+id+'').val('');
+      $('.jml_barang'+index+'').on('keyup', function () {
+        let jumlah_barang = $('.jml_barang'+index+'').val();
+        let hrg_beli = $('#harga_beli'+index+'').text();
+        let laba = $('#laba'+index+'').text();
+
+        if(jumlah_barang != ''){
+          $('.tambahLagi').removeAttr('disabled');
+          $('#simpan').removeAttr('disabled');
+          const hrg_jual = parseInt(hrg_beli) + parseInt(laba);
+          harga = countHarga(jumlah_barang,hrg_jual);
+          $('#harga'+index+'').html(harga);
+          let hrg = $('#harga'+index+'').text();
+          // let total = countTotal(index);
+          // console.log(total);
+        }else{
+          $('.tambahLagi').attr('disabled',true);
+          $('#simpan').attr('disabled',true);
+          $('#harga'+index+'').text('0');
+        }
       });
 
-      $('.row'+id+'').on('change',function(){
-        getLaba(id,id_plg,id_brg);
-        let laba = $('#laba'+id+'').text();
-        let jumlah = $('.jumlah_barang'+id+'').val();
-        let hrg_beli = $('#harga_beli'+id+'').text();
-        const hrg_jual = parseInt(hrg_beli) + parseInt(laba);
-        harga = countHarga(jumlah,hrg_jual);
+      // $(this).on('input','.form-group .jumlah',function(){
+      //   let jumlah_barang = $('.jml_barang'+index+'').val();
+      //   let hrg_beli = $('#harga_beli'+index+'').text();
+      //   let laba = $('#laba'+index+'').text();
 
-        $('#harga'+id+'').html('Rp. '+formatRupiah(harga));
-        console.log(harga);
-      });
+      //   if(jumlah_barang != ''){
+      //     $('.tambahLagi').removeAttr('disabled');
+      //     const hrg_jual = parseInt(hrg_beli) + parseInt(laba);
+      //     harga = countHarga(jumlah_barang,hrg_jual);
+      //     $('#harga'+index+'').html(harga);
+      //     let hrg = $('#harga'+index+'').text();
+      //     let total = countTotal();
+      //     console.log(total);
+      //   }else{
+      //     $('.tambahLagi').attr('disabled',true);
+      //     $('#harga'+index+'').text('0');
+      //   }
+      // });
     });
 
-    $(document).on('change','#jumlahBarang', function () {
-      let button_id = $(this).attr('nomor');
-      arrTotal.push(harga);
-      console.log(arrTotal);
-      let tot = arrTotal.reduce((a, b) => a + b, 0);
-      let dp = tot * 0.5;
-      console.log(tot);
-      
-      $('#total').html('Rp.'+formatRupiah(tot));
-      $('#dp').html('Rp.'+formatRupiah(dp));
-    });
-
-
-    $(document).on('click','.btn-remove', function () {
+    $(this).on('click','.btn-remove', function () {
       let button_id = $(this).attr('id');
       let h = $('#harga'+button_id+'').text();
-
-      arrTotal = arrTotal.filter(e => e !== parseInt(h));
-      console.log(arrTotal);
-
-      let tot = arrTotal.reduce((a, b) => a + b, 0);
-      console.log(tot);
-      $('#total').html('Rp.'+tot);
-
-      $('.row'+button_id+'').remove();
-      $('#rowRincian'+button_id+'').remove();
-
-      console.log('hapus row ke - '+i);
+    
+      $('.rowForm'+button_id+'').remove();
+      $('.rowRincian'+button_id+'').remove();
+      $('.tambahLagi').removeAttr('disabled');
+    //  countTotal();
     });
 
-    $('#simpan').on('submit', function () {
+    $('#simpan').on('click', function () {
       let data = $('#form').serialize();
-      
+      console.log(data);
       $.ajax({
         type: 'ajax',
         method: 'post',
@@ -258,6 +282,7 @@
       });
     }
 
+    
     function getKategori(id,id_kategori) {
       $.ajax({
         type: "ajax",
@@ -289,8 +314,10 @@
           return res[0].laba;
         },
         error: function (res) {
-          $('#laba_error'+id+'').html(
-            'Harga Belum Ditentukan<br><a href="<?php echo site_url()?>pelanggan/harga/'+id_plg+'" style="text-decoration:underline">Tentukan Disini</a>');
+          $('#laba_error'+id+'').html('???');
+            $('#label'+id+'').html(
+            'Harga Belum Ditentukan<br><a href="<?php echo site_url()?>pelanggan/harga/'+id_plg+'" style="text-decoration:underline;color:blue;">Tentukan Disini</a>').css('color','red');
+            $('.rowForm'+id+'').find('.jml_barang'+id+'').attr('disabled',true);
         }
       });
     }
@@ -298,6 +325,33 @@
     function countHarga(jumlah,harga_beli){
       const totalHarga = jumlah * harga_beli;
       return totalHarga;
+    }
+
+    // function countTotal(harga) {
+    //   let totalSum = 0;
+    //   $('.form-group .jumlah').each(function () {          
+    //     if($.isNumeric(harga)){
+    //       totalSum += parseFloat(harga);
+    //     }
+    //   });
+    //   return totalSum;
+    // }
+
+    function countTotal(index) {
+      var totalSum = 0;
+      var harga = $('#harga'+index+'').text();
+      var input = $('.jml_barang'+index+'').val();
+      $('.jumlah').each(function () {
+//        var input = $(this).val();
+
+        var inputVal = harga * input;
+//        if($.isNumeric(harga)){
+          //totalSum += parseInt(inputVal);
+          totalSum += parseFloat(harga);
+// console.log('tambah kolom ke - '+col);
+//      }
+      });
+      return totalSum+' gandengan '+harga;
     }
 
     function formatRupiah(angka){

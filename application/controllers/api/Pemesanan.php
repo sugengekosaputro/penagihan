@@ -100,7 +100,7 @@ class Pemesanan extends REST_Controller {
 			'id_order' => $this->post('id_order'),
 			'id_pelanggan' => $this->post('id_pelanggan'),
 			'tanggal_order' => $tanggal,
-			'status_order' => 'Proses Pengiriman',
+			'status_order' => $this->post('status'),
 			'log_time' => $waktu,
 		);
 		
@@ -109,10 +109,13 @@ class Pemesanan extends REST_Controller {
 			$order_list = $this->post('order_list');
 			$insertDetailOrder = $this->pemesanan_model->insertDetailOrder($order_list);
 			if($insertDetailOrder){
-				$this->response([
-					'status' => TRUE,
-					'message' => 'Tagihan Berhasil Dikirim',
-				],REST_Controller::HTTP_OK);
+				$id_order = $this->get('id_order');
+				$dataHarga = $this->pemesanan_model->tampilHarga($id_order);
+				$harga = array_sum(array_column($dataHarga,'harga'));
+				// $this->response([
+				// 	'status' => TRUE,
+				// 	'message' => 'Tagihan Berhasil Dikirim',
+				// ],REST_Controller::HTTP_OK);
 			}else{
 			 	$this->response([
 			 		'status' => FALSE,
@@ -253,6 +256,20 @@ class Pemesanan extends REST_Controller {
 		$res = $this->pemesanan_model->tampilRiwayatPemesanan();
 			if ($res) {
 				$this->response($res,REST_Controller::HTTP_OK);
+			} else {
+				$this->response([
+					'status' => FALSE,
+					'message' => 'Data Tidak Ada'
+				],REST_Controller::HTTP_NOT_FOUND);
+			}
+	}
+
+	public function harga_get()
+	{
+		$id_order = $this->get('id_order');
+		$res = $this->pemesanan_model->tampilHarga($id_order);
+			if ($res) {
+				$this->response(array_sum(array_column($res,'harga')),REST_Controller::HTTP_OK);
 			} else {
 				$this->response([
 					'status' => FALSE,

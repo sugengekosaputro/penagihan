@@ -72,6 +72,18 @@ class Pemesanan_model extends CI_Model {
 		}
 	}
 
+	public function tampilHarga($id_order)
+	{
+		$this->db->select('harga');
+		$this->db->where('id_order', $id_order);
+		$query = $this->db->get($this->tb_detail_order);
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return FALSE;
+		}
+	}
+
 	public function caripelanggan($keyword){
 		$this->db->like('nama_pelanggan',$keyword, 'both');
 		$this->db->group_by('nama_pelanggan', 'ASC');
