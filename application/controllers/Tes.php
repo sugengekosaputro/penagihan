@@ -5,7 +5,12 @@ class Tes extends CI_Controller {
 
 	public function index()
 	{
-		
+		$this->load->view('gudang/surat_jalan_view');
+	}
+
+	public function nota()
+	{
+		$this->load->view('gudang/nota_view');
 	}
 
 }

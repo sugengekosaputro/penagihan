@@ -28,6 +28,7 @@ class Penagihan extends CI_Controller {
 	{
 		$this->load->view('pdf_view');
 	}
+	
 	public function cetakPdf()
 	{ 
 		$view = $this->load->view('pdf_view');
