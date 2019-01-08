@@ -43,7 +43,7 @@
     <link href='<?php echo base_url() ?>assets/js/jquery.autocomplete.css' rel='stylesheet' />
   </head>
 
-  <body class="nav-md">
+  <body class="nav-md footer_fixed">
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -79,7 +79,7 @@
         </div>
 
         <!-- top navigation -->
-        <div class="top_nav ">
+        <div class="top_nav navbar-fixed-top">
           <div class="nav_menu" style="background-color : #f9a825">
             <nav>
               <div class="nav toggle">
