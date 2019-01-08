@@ -15,7 +15,7 @@ class Pembayaran_model extends CI_Model {
 	// 	}
 	// }
 
-    public function tampilPembayaranById($id_pembayaran)
+  public function tampilPembayaranById($id_pembayaran)
 	{
 		$this->db->where('id_pembayaran', $id_pembayaran);
 		$query = $this->db->get($this->tabel);
@@ -47,37 +47,24 @@ class Pembayaran_model extends CI_Model {
 		}
     }
     
-    public function insertDetailPembayaran($data)
-    {
-        $this->db->insert($this->tabel_detail, $data);
+	public function insertDetailPembayaran($data)
+	{
+		$this->db->insert($this->tabel_detail, $data);
 		if ($this->db->affected_rows()>0) {
 			return TRUE;
 		} else {
 			return FALSE;
 		}
-    }
+	}
 
-	// public function updateBarang($id,$data)
-	// {
-	// 	$this->db->where('id_barang', $id)->update($this->tabel, $data);
-		
-	// 	if ($this->db->affected_rows()>0) {
-	// 		return TRUE;
-	// 	} else {
-	// 		return FALSE;
-	// 	}
-	// }
-
-	// public function deleteBarang($id)
-	// {
-	// 	$this->db->where('id_barang', $id)
-	// 	->delete($this->tabel);
-
-	// 	if ($this->db->affected_rows()>0) {
-	// 		return true;
-	// 	}else {
-	// 		return false;
-	// 	}
-	// }
+	public function updateHargaKirim($id_order,$data)
+	{
+		$this->db->where('id_order', $id)->update($this->tabel, $data);
+		if ($this->db->affected_rows()>0) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 }
 

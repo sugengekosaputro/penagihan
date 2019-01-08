@@ -37,7 +37,7 @@
     <link href="<?php echo base_url() ?>assets/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
 
     <!-- Custom Theme Style -->
-    <link href="<?php echo base_url() ?>assets/build/css/custom.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/build/css/custom.css" rel="stylesheet">
     <!-- Jquery Ui -->
     <link href="<?php echo base_url() ?>assets/js/jquery-ui.css" rel="stylesheet">
     <link href='<?php echo base_url() ?>assets/js/jquery.autocomplete.css' rel='stylesheet' />

@@ -17,7 +17,7 @@ class Pemesanan extends CI_Controller {
 
   public function index()
 	{
-//		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan'));
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan'));
 		$this->load->view('layout/main', $this->data);
 	}
 
@@ -30,19 +30,24 @@ class Pemesanan extends CI_Controller {
 
 	public function detail()
 	{
+		$id_order = $this->uri->segment(3);
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
 		$this->data['content'] = 'pemesanan/detail_view';
 		$this->load->view('layout/main', $this->data);
 	}
 
 	public function surat_jalan()
 	{
+		$id_order = $this->uri->segment(3);
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
 		$this->data['content'] = 'pemesanan/surat_jalan_view';
 		$this->load->view('layout/main', $this->data);
 	}
 	
 	public function tambah()
 	{
-		$this->data['content'] = 'pemesanan/tambah_pemesanan_view';
+		$this->data['content'] = 'pemesanan/tambah_pemesanan_update';
+//		$this->data['content'] = 'pemesanan/tambah_pemesanan_view';
 		$this->load->view('layout/main', $this->data);
 	}
 
@@ -51,6 +56,12 @@ class Pemesanan extends CI_Controller {
 		$id_order = $this->input->post('id_order');
 		$barang = $this->input->post('id_barang');
 		$jumlah = $this->input->post('jumlah_order');
+		$status = $this->input->post('cekdp');
+		if(isset($status)){
+			$dp = 'DP';
+		}else{
+			$dp = 'Belum DP';
+		}
 
 		foreach(array_combine($barang,$jumlah) as $brg => $jml){
 			$array[] = array(
@@ -63,6 +74,7 @@ class Pemesanan extends CI_Controller {
 			'id_order' => $id_order,
 			'id_pelanggan' => $this->input->post('id_pelanggan'),
 			'order_list' => $array,
+			'status' => $dp,
 		];
 //		echo json_encode($body);
 		$response = json_decode($this->guzzle_post(base_url().'api/','pemesanan',$body));		
