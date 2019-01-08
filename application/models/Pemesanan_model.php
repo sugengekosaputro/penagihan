@@ -8,20 +8,18 @@ class Pemesanan_model extends CI_Model {
 						$tb_detail_order = 'tb_detail_order_rev',
             $tb_pelanggan='tb_pelanggan';
 	
-	// public function tampilPemesanan()
-	// {   
-	// 	$this->db->select("tb_order_rev.*, tb_pelanggan.*, tb_master_barang.*");
-	// 	$this->db->join('tb_pelanggan','tb_pelanggan.id_pelanggan=tb_order_rev.id_pelanggan');
-	// 	$this->db->join('tb_master_barang','tb_master_barang.id_barang=tb_order_rev.id_barang');
-	// 	$this->db->where('tb_order_rev.status_order','Proses Pengiriman');
-	// 	$this->db->order_by('tb_order_rev.id_order','DESC');
-	// 	$query = $this->db->get($this->tb_order);
-	// 	if ($query->num_rows() > 0) {
-	// 		return $query->result();
-	// 	} else {
-	// 		return FALSE;
-	// 	}
-	// }
+	public function tampilPemesanan()
+	{   
+		$this->db->select("tb_order_rev.*, tb_pelanggan.*");
+		$this->db->join('tb_pelanggan','tb_pelanggan.id_pelanggan=tb_order_rev.id_pelanggan');
+		$this->db->order_by('tb_order_rev.id_order','DESC');
+		$query = $this->db->get($this->tb_order);
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return FALSE;
+		}
+	}
 
 	public function tampilPemesananByTgl($tgl)
 	{
@@ -65,6 +63,19 @@ class Pemesanan_model extends CI_Model {
 	{
 		$this->db->where('log_time', $log);
 		$query = $this->db->get($this->tb_order);
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function tampilDetailOrder($id_order)
+	{
+		$this->db->select($this->tb_detail_order.'.*, tb_master_barang.nama_barang');
+		$this->db->join('tb_master_barang','tb_detail_order_rev.id_barang = tb_master_barang.id_barang');
+		$this->db->where($this->tb_detail_order.'.id_order', $id_order);
+		$query = $this->db->get($this->tb_detail_order);
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		} else {

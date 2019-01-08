@@ -18,43 +18,33 @@
                   <input type="text" name="id_pelanggan" id="id_pelanggan" hidden>
                   <!-- <input type="text" name="id_barang[]" id="id_barang1" hidden>  -->
                   <!-- -->
-                <div id="dynamicField">
-                  <div class="form-group">
-                    <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
-                      <input type="text" name="surat_jalan" class="form-control has-feedback-left" id="suratjalan" placeholder="Nomor surat jalan">
-                      <span class="fa fa-pencil-square-o form-control-feedback left" aria-hidden="true"></span>
-                    </div>                   
+                <div class="form-group">
+                  <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                    <input type="text" name="surat_jalan" class="form-control has-feedback-left" id="suratjalan" placeholder="Nomor surat jalan">
+                    <span class="fa fa-pencil-square-o form-control-feedback left" aria-hidden="true"></span>
+                  </div>                   
+                </div>
+                <!--foreach-->
+                <?php foreach($data as $dt){ ?>
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                    <label><?php echo $dt->nama_barang ?><label>
                   </div>
-                  <!--foreach-->
-                  <div class="form-group">
-                    <div class="col-md-8 col-sm-8 col-xs-12 form-group has-feedback">
-                      <div class="checkbox">
-                         <label>
-                                <input type="checkbox" value="" class="flat"> MANGGA ONLINE KLONAL 21(MANGGA ONLINE KL
-                          </label>
-                      </div>  
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">  
-                          <input type="number" name="jumlah[]" class="form-control has-feedback-left" id="jumlah" placeholder="jumlah">
-                    </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                    <input type="number" name="jumlah[]" class="form-control" id="jumlah" value="<?php echo $dt->jumlah ?>" readonly>  
+                    <label>Jumlah Pesanan<label>
                   </div>
-
-                  <div class="form-group">
-                    <div class="col-md-8 col-sm-8 col-xs-12 form-group has-feedback">
-                      <div class="checkbox">
-                         <label>
-                                <input type="checkbox" value="0" class="flat"> MANGGA ONLINE KLONAL 21(MANGGA ONLINE KL
-                          </label>
-                      </div>  
-                    </div>  
-                    <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">  
-                          <input type="number" name="jumlah[]" class="form-control has-feedback-left" id="jumlah" placeholder="jumlah">
-                    </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12 form-group">  
+                    <input type="number" name="jumlah[]" class="form-control" id="jumlah" placeholder="Masukkan Jumlah Dikirim">
+                    <label>Jumlah Dikirim<label>
                   </div>
-                  <!---->
-                </div>  
-
+                </div>
                 <div class="ln_solid"></div>
+                
+                <?php }?>
+                
                 <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <a class="btn btn-primary" href="<?php echo base_url('pemesanan'); ?>" type="button">Kembali</a>

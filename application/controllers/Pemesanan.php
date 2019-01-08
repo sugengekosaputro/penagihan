@@ -17,7 +17,7 @@ class Pemesanan extends CI_Controller {
 
   public function index()
 	{
-//		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan'));
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan'));
 		$this->load->view('layout/main', $this->data);
 	}
 
@@ -30,12 +30,16 @@ class Pemesanan extends CI_Controller {
 
 	public function detail()
 	{
+		$id_order = $this->uri->segment(3);
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
 		$this->data['content'] = 'pemesanan/detail_view';
 		$this->load->view('layout/main', $this->data);
 	}
 
 	public function surat_jalan()
 	{
+		$id_order = $this->uri->segment(3);
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
 		$this->data['content'] = 'pemesanan/surat_jalan_view';
 		$this->load->view('layout/main', $this->data);
 	}

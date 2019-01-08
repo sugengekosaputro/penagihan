@@ -18,7 +18,7 @@
                     <input type="number" class="form-control barang1" id="idBarang" name="barang[]" placeholder="Barang">
                   </div>
                   <div class="col-md-3 col-sm-5 col-xs-12 form-group">
-                    <input type="number" get="1" class="form-control angka1" id="idJumlah" name="jumlah[]" placeholder="Jumlah">
+                    <input type="number" get="1" class="form-control angka" id="idJumlah" name="jumlah[]" placeholder="Jumlah">
                   </div>
                 </div>
                 <div class="col-md-9 col-sm-9 col-xs-12">
@@ -58,7 +58,7 @@
             "<input type='number' class='form-control barang"+i+"' id='idBarang' name='barang[]' placeholder='Barang'>"+
           "</div>"+
           "<div class='col-md-3 col-sm-5 col-xs-12 form-group'>"+
-            "<input type='number' get='"+i+"'class='form-control angka angka"+i+"' id='idJumlah' name='jumlah[]' placeholder='Jumlah'>"+
+            "<input type='number' get='"+i+"'class='form-control angka' id='idJumlah' name='jumlah[]' placeholder='Jumlah'>"+
           "</div>"+
           "<div class='col-md-4 col-sm-2 col-xs-12 form-group'>"+
             "<button type='button' id='"+i+"' class='btn btn-danger btn-sm btn-remove'><span class='fa fa-close'></span></button>"+
@@ -70,28 +70,18 @@
     $(document).on('click','.btn-remove', function () {
       let button_id = $(this).attr('id');
       $('#row'+button_id+'').remove();
-      var totalSum = 0;
-      $('.form-group .angka').each(function () {
-        var inputVal = $(this).val();
-        if($.isNumeric(inputVal)){
-          totalSum += parseInt(inputVal);
-        }
-      });
-      console.log(totalSum);
       //alert('ok');
     });
 
     $(document).on('input','.form-group .angka',function(){
       var totalSum = 0;
-      let get = $(this).attr('get');
-      let brg = $('.barang'+get+'').val();
       $('.form-group .angka').each(function () {
-        var inputVal = $('.angka'+get+'').val();
+        var inputVal = $(this).val();
         if($.isNumeric(inputVal)){
-          totalSum += (parseInt(inputVal) * parseInt(brg));
+          totalSum += parseFloat(inputVal);
         }
       });
-      console.log('jumlah = '+totalSum+', barang = '+brg);
+      console.log('jumlah = '+totalSum);
     });
 
     $('#simpan').on('click', function () {

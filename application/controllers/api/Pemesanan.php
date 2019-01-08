@@ -22,7 +22,7 @@ class Pemesanan extends REST_Controller {
 	public function index_get()
 	{
 		$id = $this->uri->segment(3);
-//		$res = $this->pemesanan_model->tampilPemesanan();
+		$res = $this->pemesanan_model->tampilPemesanan();
 		$resId = $this->pemesanan_model->tampilPemesananById($id);
 		if(empty($id)){
 			if ($res) {
@@ -89,6 +89,21 @@ class Pemesanan extends REST_Controller {
 				'message' => 'Data Tidak Ada'
 			],REST_Controller::HTTP_NOT_FOUND);
 		}
+	}
+
+	public function getDetailOrder_get()
+	{
+		$id_order = $this->uri->segment(4);
+		$res = $this->pemesanan_model->tampilDetailOrder($id_order);
+		if ($res) {
+			$this->response($res,REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Data Tidak Ada'
+			],REST_Controller::HTTP_NOT_FOUND);
+		}
+		//echo $id_order;
 	}
 
 	public function index_post()

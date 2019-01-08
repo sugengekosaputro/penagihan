@@ -29,22 +29,23 @@
                   </tr>
                 </thead>
                 <tbody>
+                <?php foreach($data as $dt){ ?>
                   <tr>
-                    <td>181221001</td>
-                    <td>Cv. Fabi Nur Cahyo</td>
-                    <td>Jl.Dr Soetomo</td>
-                    <td>2018-12-21</td>
-                    <td>2500</td>
-                    <td><a style=color:red>300</a></td>
+                      <td><?php echo $dt->id_order ?></td>
+                      <td><?php echo $dt->nama_pelanggan ?></td>
+                      <td><?php echo $dt->alamat ?></td>
+                      <td><?php echo $dt->tanggal_order ?></td>
+                      <td><?php echo ''?></td>
+                      <td style="color:red"><?php echo ''?></td>
                     <td>
-                      <a href="<?php echo site_url('pemesanan/detail') ?>" class="btn btn-success"><span class="fa fa-list">&nbsp</span>Detail</a>
+                      <a href="<?php echo site_url('pemesanan/detail/'.$dt->id_order) ?>" class="btn btn-success"><span class="fa fa-list">&nbsp</span>Detail</a>
                        <br>
-                      <a href="<?php echo site_url('pemesanan/surat_jalan') ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
+                      <a href="<?php echo site_url('pemesanan/surat_jalan/'.$dt->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
                        <br>
                       <a href="<?php echo site_url('') ?>" class="btn btn-primary"><span class="fa fa-chevron-down">&nbsp</span>Pesanan Selesai</a>
                     </td>
                   </tr>
-                
+                <?php } ?>                
                 </tbody>
               </table>
             </div>
