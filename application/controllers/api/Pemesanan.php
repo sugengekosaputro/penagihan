@@ -103,34 +103,44 @@ class Pemesanan extends REST_Controller {
 				'message' => 'Data Tidak Ada'
 			],REST_Controller::HTTP_NOT_FOUND);
 		}
-		//echo $id_order;
 	}
 
 	public function index_post()
 	{	
 		$tanggal = date('Y-m-d');
 		$waktu = date('H:i:s');
-		
-		$body = array(
-			'id_order' => $this->post('id_order'),
+		$id_order = $this->post('id_order');
+		$body_order = array(
+			'id_order' => $id_order,
 			'id_pelanggan' => $this->post('id_pelanggan'),
 			'tanggal_order' => $tanggal,
 			'status_order' => $this->post('status'),
 			'log_time' => $waktu,
 		);
 		
-		$insertPemesanan = $this->pemesanan_model->insertOrder($body);
+		$insertPemesanan = $this->pemesanan_model->insertOrder($body_order);
 		if($insertPemesanan){
 			$order_list = $this->post('order_list');
 			$insertDetailOrder = $this->pemesanan_model->insertDetailOrder($order_list);
 			if($insertDetailOrder){
-				$id_order = $this->get('id_order');
-				$dataHarga = $this->pemesanan_model->tampilHarga($id_order);
-				$harga = array_sum(array_column($dataHarga,'harga'));
-				// $this->response([
-				// 	'status' => TRUE,
-				// 	'message' => 'Tagihan Berhasil Dikirim',
-				// ],REST_Controller::HTTP_OK);
+				$harga = array_sum(array_column($order_list,'harga'));
+				$body_pembayaran = array(
+				 	'id_order' => $id_order,
+				 	'total_bayar' => $harga,
+					'status_pembayaran' => 'Belum Bayar',
+				);
+				$insertPembayaran = $this->pembayaran_model->insertPembayaran($body_pembayaran);
+				if($insertPembayaran){
+					$this->response([
+						'status' => TRUE,
+						'message' => 'Tagihan Berhasil Dikirim',
+					],REST_Controller::HTTP_OK);	
+				}else{
+					$this->response([
+						'status' => FALSE,
+					 'message' => 'Data PEMBAYARAN Gagal Ditambahkan',
+				 ],REST_Controller::HTTP_BAD_REQUEST);
+				}
 			}else{
 			 	$this->response([
 			 		'status' => FALSE,
@@ -230,6 +240,27 @@ class Pemesanan extends REST_Controller {
 	// 		],REST_Controller::HTTP_BAD_REQUEST);
 	// 	}
 	// }
+
+	public function tesinput_post()
+	{
+		$body_pembayaran = array(
+			'id_order' => $this->post('id_order'),
+			'total_bayar' => '9978',
+			'status_pembayaran' => 'Belum Bayar',
+		);
+		$insertPembayaran = $this->pembayaran_model->insertPembayaran($body_pembayaran);
+		if($insertPembayaran){
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Tagihan Berhasil Dikirim',
+			],REST_Controller::HTTP_OK);
+		}else{
+			$this->response([
+				'status' => FALSE,
+			 'message' => 'Data HargaPembayaran Gagal Ditambahkan',
+		 ],REST_Controller::HTTP_BAD_REQUEST);					
+		}
+	}
 
 	public function pelanggan_post(){
 		$keyword = $this->post('keyword');

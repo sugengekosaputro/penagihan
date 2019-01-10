@@ -11,8 +11,8 @@ class Pemesanan_model extends CI_Model {
 	public function tampilPemesanan()
 	{   
 		$this->db->select("tb_order_rev.*, tb_pelanggan.*");
-		$this->db->join('tb_pelanggan','tb_pelanggan.id_pelanggan=tb_order_rev.id_pelanggan');
-		$this->db->order_by('tb_order_rev.id_order','DESC');
+		$this->db->join("tb_pelanggan","tb_pelanggan.id_pelanggan=tb_order_rev.id_pelanggan");
+		$this->db->order_by("tb_order_rev.id_order","DESC");
 		$query = $this->db->get($this->tb_order);
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -35,8 +35,8 @@ class Pemesanan_model extends CI_Model {
 
 	public function tampilRiwayatPemesanan()
 	{   
-        $this->db->select("tb_order.*, tb_pelanggan.*, tb_master_barang.*, tb_pembayaran.*");
-        $this->db->join('tb_pelanggan','tb_pelanggan.id_pelanggan=tb_order.id_pelanggan');
+    $this->db->select("tb_order.*, tb_pelanggan.*, tb_master_barang.*, tb_pembayaran.*");
+    $this->db->join('tb_pelanggan','tb_pelanggan.id_pelanggan=tb_order.id_pelanggan');
 		$this->db->join('tb_master_barang','tb_master_barang.id_barang=tb_order.id_barang');
 		$this->db->join('tb_pembayaran','tb_pembayaran.id_order=tb_order.id_order');
 		$this->db->where('tb_order.status_order','Selesai Pengiriman');

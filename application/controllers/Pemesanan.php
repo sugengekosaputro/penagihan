@@ -32,6 +32,12 @@ class Pemesanan extends CI_Controller {
 	{
 		$id_order = $this->uri->segment(3);
 		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
+		$tagihan = json_decode($this->guzzle_get(base_url().'api/','tagihan/'.$id_order));
+		if($tagihan == false){
+			$this->data['tagihan'] = null;
+		}else{
+			$this->data['tagihan'] = $tagihan;
+		}
 		$this->data['content'] = 'pemesanan/detail_view';
 		$this->load->view('layout/main', $this->data);
 	}
@@ -54,6 +60,7 @@ class Pemesanan extends CI_Controller {
 	public function simpan()
 	{
 		$id_order = $this->input->post('id_order');
+		$harga = $this->input->post('harga_barang');
 		$barang = $this->input->post('id_barang');
 		$jumlah = $this->input->post('jumlah_order');
 		$status = $this->input->post('cekdp');
@@ -63,20 +70,26 @@ class Pemesanan extends CI_Controller {
 			$dp = 'Belum DP';
 		}
 
-		foreach(array_combine($barang,$jumlah) as $brg => $jml){
+		$lenght = count($barang);
+		$i = 0;
+
+		while($i < $lenght){
 			$array[] = array(
 				'id_order' => $id_order,
-				'id_barang' => $brg,
-				'jumlah' => $jml,
+				'id_barang' => $barang[$i],
+				'jumlah' => $jumlah[$i],
+				'harga' => $harga[$i]
 			);
+			$i++;
 		}
+
 		$body = [
 			'id_order' => $id_order,
 			'id_pelanggan' => $this->input->post('id_pelanggan'),
 			'order_list' => $array,
 			'status' => $dp,
 		];
-//		echo json_encode($body);
+		//echo json_encode($body);
 		$response = json_decode($this->guzzle_post(base_url().'api/','pemesanan',$body));		
 		if($response->status){
 			echo json_encode($response);
@@ -195,11 +208,6 @@ class Pemesanan extends CI_Controller {
 		echo json_encode($response);
 	}
 
-	public function getLaba()
-	{
-		
-	}
-
 	public function hapus($id_barang)
 	{
 		$body = [
@@ -213,9 +221,15 @@ class Pemesanan extends CI_Controller {
 
 	public function guzzle_get($url,$uri)
 	{
-		$client = new GuzzleHttp\Client(['base_uri' => $url]);
-		$response = $client->request('GET',$uri);
-		return $response->getBody();
+		try{
+			$client = new GuzzleHttp\Client(['base_uri' => $url]);
+			$response = $client->request('GET',$uri);
+			return $response->getBody();
+		}catch(GuzzleHttp\Exception\ClientException $e){
+			$response = $e->getResponse();
+			$responseBodyAsString = $response->getBody();
+			return null;
+		}
 	}
 
 	public function guzzle_post($url,$uri,$body)

@@ -43,7 +43,7 @@
     <link href='<?php echo base_url() ?>assets/js/jquery.autocomplete.css' rel='stylesheet' />
   </head>
 
-  <body class="nav-md footer_fixed">
+  <body class="nav-md">
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">

@@ -42,8 +42,6 @@
                     <td>
                       <a href="<?php echo site_url('pemesanan/detail/'.$dt->id_order) ?>" class="btn btn-success"><span class="fa fa-list">&nbsp</span>Detail</a>
                        <br>
-                      <a href="<?php echo site_url('pemesanan/surat_jalan/'.$dt->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
-                       <br>
                       <a href="<?php echo site_url('') ?>" class="btn btn-primary"><span class="fa fa-chevron-down">&nbsp</span>Pesanan Selesai</a>
                     </td>
                   </tr>

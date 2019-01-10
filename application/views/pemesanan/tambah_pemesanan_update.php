@@ -16,7 +16,6 @@
                   <!-- hidden input -->
                   <input type="text" name="id_order" id="id_order" hidden>
                   <input type="text" name="id_pelanggan" id="id_pelanggan" hidden>
-                  <!-- <input type="text" name="id_barang[]" id="id_barang1" hidden>  -->
                   <!-- -->
                 <div id="dynamicForm">
                   <div class="form-group">
@@ -48,7 +47,7 @@
                 <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <a class="btn btn-primary" href="<?php echo base_url('pemesanan'); ?>" type="button">Kembali</a>
-                    <input type="submit" class="btn btn-success" id="simpan" value="Simpan" disabled/>
+                    <input type="click" class="btn btn-success" id="simpan" value="Simpan" disabled/>
                   </div>
                 </div>
               </form>
@@ -139,7 +138,8 @@
         i++;
         $('#dynamicForm').append(
           "<div id='rowForm' class='rowForm"+i+"' index='"+i+"'>"+
-            "<input type='text' name='id_barang[]' id='id_barang"+i+"' hidden>"+ 
+            "<input type='text' name='id_barang[]' id='id_barang"+i+"' hidden>"+
+            "<input type='text' name='harga_barang[]' id='harga_barang"+i+"' hidden>"+ 
             "<div class='col-md-8 col-sm-8 col-xs-12 form-group has-feedback'>"+
               "<input type='text' name='nama_barang[]' class='form-control nm_barang"+i+"' id='namaBarang'>"+
               "<label id='label"+i+"'>Nama Barang</label>"+
@@ -204,6 +204,7 @@
           const hrg_jual = parseInt(hrg_beli) + parseInt(laba);
           harga = countHarga(jumlah_barang,hrg_jual);
           $('#harga'+index+'').html(harga);
+          $('#harga_barang'+index+'').val(harga);
           let hrg = $('#harga'+index+'').text();
           // let total = countTotal(index);
           // console.log(total);
@@ -241,7 +242,7 @@
       $('.rowForm'+button_id+'').remove();
       $('.rowRincian'+button_id+'').remove();
       $('.tambahLagi').removeAttr('disabled');
-    //  countTotal();
+    // countTotal();
     });
 
     $('#simpan').on('click', function () {
@@ -256,7 +257,7 @@
         dataType: 'json',
         success: function (res){
           if(res.status){
-           window.location.href = "<?php echo site_url('pemesanan') ?>"
+           //window.location.href = "<?php echo site_url('pemesanan') ?>"
             alert(res.message);
             console.log(res);
           }
