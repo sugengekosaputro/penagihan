@@ -18,10 +18,10 @@
                     <span class="fa fa-pencil-square-o form-control-feedback left" aria-hidden="true"></span>
                   </div>                   
                 </div>
-                <?php foreach($data as $dt){ ?>
+
                 <div class="form-group">
                   <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                    <label><?php echo $dt->nama_barang ?><label>
+                    <label>Mangga Klonal<label>
                   </div>
                 </div>
 
@@ -29,12 +29,12 @@
                   <div class="col-md-2 col-sm-2 col-xs-12 form-group">
                     <input class="form-check-input" name="checkbox" id="cek1" type="checkbox" value="checkedValue" aria-label="Text for screen reader">&nbsp Dikirim
                   </div>
-                  <input type="text" name="id_detail_order[]" id="id_order1" value="<?php echo $dt->id_detail_order ?>">
+                  <input type="text" name="id_detail_order[]" id="id_order1">
                 </div>
 
                 <div class="form-group">
                   <div class="col-md-4 col-sm-4 col-xs-12 form-group">
-                    <input type="number" name="pesanan[]" class="form-control pesanan1" id="pesanan" value="<?php echo $dt->jumlah ?>" readonly>  
+                    <input type="number" name="pesanan[]" class="form-control pesanan1" id="pesanan" value="85" readonly>  
                     <label>Jumlah Pesanan<label>
                   </div>
                   <div class="col-md-4 col-sm-4 col-xs-12 form-group">  
@@ -42,9 +42,29 @@
                     <label>Jumlah Dikirim<label>
                   </div>
                 </div>
-                
                 <div class="ln_solid"></div>
-                <?php }?>
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                    <label>GFR Kosongan<label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-2 col-sm-2 col-xs-12 form-group">
+                    <input class="form-check-input" name="checkbox" id="cek2" type="checkbox" value="checkedValue" aria-label="Text for screen reader">&nbsp Pending
+                  </div>
+                  <input type="text" name="id_detail_order[]" id="id_order1">
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4 col-sm-4 col-xs-12 form-group">
+                    <input type="number" name="pesanan[]" class="form-control pesanan2" id="pesanan" value="20" readonly>  
+                    <label>Jumlah Pesanan<label>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12 form-group">  
+                    <input type="number" name="dikirim[]" class="form-control jum2" id="dikirim" placeholder="Masukkan Jumlah Dikirim">
+                    <label>Jumlah Dikirim<label>
+                  </div>
+                </div>
+                <div class="ln_solid"></div>
 
                 <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
@@ -60,9 +80,14 @@
     </div>
   </div>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(function(){
+
+    $("#checkbox").on('click',function () {
+      console.log('check');
+    });
     $("#simpan").on("click", function () {
       var fav = [];
       $.each($("input[name=checkbox]:checked"), function () { 

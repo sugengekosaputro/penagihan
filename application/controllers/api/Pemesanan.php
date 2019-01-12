@@ -123,10 +123,14 @@ class Pemesanan extends REST_Controller {
 			$order_list = $this->post('order_list');
 			$insertDetailOrder = $this->pemesanan_model->insertDetailOrder($order_list);
 			if($insertDetailOrder){
-				$harga = array_sum(array_column($order_list,'harga'));
+				foreach($order_list as $ol){
+					$arrJumlah[] = $ol['jumlah'] * $ol['harga'];
+				}
+				$total = array_sum($arrJumlah);
 				$body_pembayaran = array(
 				 	'id_order' => $id_order,
-				 	'total_bayar' => $harga,
+					'total_bayar' => $total,
+					'dp' => 0,
 					'status_pembayaran' => 'Belum Bayar',
 				);
 				$insertPembayaran = $this->pembayaran_model->insertPembayaran($body_pembayaran);
