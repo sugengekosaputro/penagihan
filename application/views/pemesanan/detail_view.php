@@ -8,18 +8,27 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Detail Pemesanan<small>Billy Box Bangil</small></h2>
-              <ul class="nav navbar-right panel_toolbox">
-                
-              </ul>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-              <table id="" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+            <table class="table nowrap" cellspacing="0" width="100%" >
+              <tr>
+                <td style="border-top:none">CV.ABC</td>
+                <td class="text-right" style="border-top:none">01 January 2019</td>
+              </tr>
+              <tr>
+                <td style="border-top:none">CV.ABC</td>
+                <td class="text-right" style="border-top:none">01 January 2019</td>
+              </tr>
+            </table>
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
                   <tr>
                     <th>Id Barang</th>
                     <th>Nama Barang</th>
-                    <th>Jumlah Order</th>
+                    <th>Jml Order</th>
+                    <th>Harga</th>
+                    <th>Jumlah</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -28,12 +37,24 @@
                     <td><?php echo $dt->id_barang ?></td>
                     <td><?php echo $dt->nama_barang ?></td>
                     <td><?php echo $dt->jumlah ?></td>
+                    <td><?php echo $dt->harga ?></td>
+                    <td><?php echo $dt->harga * $dt->jumlah ?></td>
                   </tr>
                 <?php } ?>
-                <tr>
-                    <td></td>
-                    <td class="text-right">Total Bayar</td>
-                    <td><?php echo $dt->harga ?></td>
+                  <tr>
+                    <td colspan=3></td>
+                    <td class="text-right"><b>Harga Bayar</b></td>
+                    <td><b><?php echo $dt->total_bayar ?></b></td>
+                  </tr>
+                  <tr>
+                    <td colspan=3></td>
+                    <td class="text-right"><b>DP</td>
+                    <td><b><?php echo $dt->dp ?></b></td>
+                  </tr>
+                  <tr class="table table-border-0">
+                    <td colspan=3></td>
+                    <td class="text-right"><b>Sisa Pembayaran</b></td>
+                    <td><b><?php echo $dt->sisa ?></b></td>
                   </tr>
                 </tbody>
               </table>
@@ -45,7 +66,7 @@
       </div>
 
       <?php if($tagihan == null){ ?>
-        <div class="row">
+      <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">

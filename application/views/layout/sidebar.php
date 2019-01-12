@@ -38,6 +38,9 @@
           <li><a href="<?php echo base_url('Master/selectsuggest')?>"><i class="fa fa-bar-chart-o"></i>
               Select Suggest<span class="label label-success pull-right"></span></a>
           </li>
+          <li><a href="<?php echo base_url('Master/checkbox')?>"><i class="fa fa-bar-chart-o"></i>
+              Checkbox<span class="label label-success pull-right"></span></a>
+          </li>
         </ul>
       </li>
     </ul>

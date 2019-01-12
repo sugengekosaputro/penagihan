@@ -19,6 +19,12 @@ class Master extends CI_Controller {
       $this->load->view('layout/main', $this->data);
     }
 
+    public function checkbox()
+    {
+      $this->data['content'] = 'master/form_checkbox';
+      $this->load->view('layout/main', $this->data);
+    }
+
     public function save()
     {
       $barang = $this->input->post('barang');

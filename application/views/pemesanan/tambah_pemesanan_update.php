@@ -33,7 +33,7 @@
                   <button type="button" class="btn btn-default" id="reset"><span class="fa fa-trash">&nbsp</span>Reset</button>
                   </div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <div class="col-md-9 col-sm-9 col-xs-12">
                     <div class="form-check form-check-inline">
                       <label class="form-check-label">
@@ -41,7 +41,7 @@
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="ln_solid"></div>
                 <div class="form-group">
@@ -204,7 +204,7 @@
           const hrg_jual = parseInt(hrg_beli) + parseInt(laba);
           harga = countHarga(jumlah_barang,hrg_jual);
           $('#harga'+index+'').html(harga);
-          $('#harga_barang'+index+'').val(harga);
+          $('#harga_barang'+index+'').val(hrg_jual);
           let hrg = $('#harga'+index+'').text();
           // let total = countTotal(index);
           // console.log(total);
@@ -257,7 +257,7 @@
         dataType: 'json',
         success: function (res){
           if(res.status){
-           //window.location.href = "<?php echo site_url('pemesanan') ?>"
+           window.location.href = "<?php echo site_url('pemesanan') ?>"
             alert(res.message);
             console.log(res);
           }

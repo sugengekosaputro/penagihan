@@ -63,12 +63,12 @@ class Pemesanan extends CI_Controller {
 		$harga = $this->input->post('harga_barang');
 		$barang = $this->input->post('id_barang');
 		$jumlah = $this->input->post('jumlah_order');
-		$status = $this->input->post('cekdp');
-		if(isset($status)){
-			$dp = 'DP';
-		}else{
-			$dp = 'Belum DP';
-		}
+		//$status = $this->input->post('cekdp');
+		// if(isset($status)){
+		// 	$dp = 'DP';
+		// }else{
+		// 	$dp = 'Belum DP';
+		// }
 
 		$lenght = count($barang);
 		$i = 0;
@@ -87,7 +87,7 @@ class Pemesanan extends CI_Controller {
 			'id_order' => $id_order,
 			'id_pelanggan' => $this->input->post('id_pelanggan'),
 			'order_list' => $array,
-			'status' => $dp,
+			'status' => 'Baru',
 		];
 		//echo json_encode($body);
 		$response = json_decode($this->guzzle_post(base_url().'api/','pemesanan',$body));		
