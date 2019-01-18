@@ -31,13 +31,24 @@ class Pemesanan extends CI_Controller {
 	public function detail()
 	{
 		$id_order = $this->uri->segment(3);
-		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
+		$info = json_decode($this->guzzle_get(base_url().'api/','pemesanan/'.$id_order));
+		$this->data['pelanggan'] = $info[0]->nama_pelanggan;
+		$this->data['tanggal'] = $info[0]->tanggal_order;
+		$this->data['alamat'] = $info[0]->alamat;
+		$this->data['order'] = $info[0]->status_order;
+		$this->data['bayar'] = $info[0]->status_pembayaran;
+
+		$detail = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
+		$this->data['data'] = $detail;
+
 		$tagihan = json_decode($this->guzzle_get(base_url().'api/','tagihan/'.$id_order));
 		if($tagihan == false){
 			$this->data['tagihan'] = null;
 		}else{
 			$this->data['tagihan'] = $tagihan;
+			$this->data['id_order'] = $id_order;
 		}
+
 		$this->data['content'] = 'pemesanan/detail_view';
 		$this->load->view('layout/main', $this->data);
 	}
