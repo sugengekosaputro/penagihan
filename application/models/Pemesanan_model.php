@@ -50,7 +50,11 @@ class Pemesanan_model extends CI_Model {
 
 	public function tampilPemesananById($id)
 	{
-		$this->db->where('id_order', $id);
+		$this->db->select("tb_order_rev.*, tb_pelanggan.*, tb_pembayaran.*");
+		$this->db->join("tb_pelanggan","tb_pelanggan.id_pelanggan=tb_order_rev.id_pelanggan");
+		$this->db->join("tb_pembayaran","tb_order_rev.id_order=tb_pembayaran.id_order");
+		$this->db->order_by("tb_order_rev.id_order","DESC");
+		$this->db->where('tb_order_rev.id_order', $id);
 		$query = $this->db->get($this->tb_order);
 		if ($query->num_rows() > 0) {
 			return $query->result();

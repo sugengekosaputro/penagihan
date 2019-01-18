@@ -7,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Detail Pemesanan<small>Billy Box Bangil</small></h2>
+              <h2>Nota Penjualan</h2>
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -58,9 +58,6 @@
                   </tr>
                 </tbody>
               </table>
-              <h4>Status Order : <label> <?php echo $order ?></label></h4>
-              <h4>Status Bayar : <label> <?php echo $bayar ?></label></h4>
-              <a href="#" class="btn btn-primary input-pembayaran"><span class="fa fa-shopping-cart"> &nbsp</span>Input Pembayaran</a>
             </div>
           </div>
         </div>   
@@ -79,7 +76,6 @@
           </div>
           <div class="x_content">
             Pesanan Belum Dikirim
-            <a href="<?php echo site_url('pemesanan/surat_jalan/'.$dt->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
             <p class="text-muted font-13 m-b-30">
               <a href="<?php echo site_url('pemesanan')?>" class="btn btn-primary"><span class="fa fa-arrow-left">&nbsp</span>Kembali</a>
             </p>
@@ -93,28 +89,25 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h2>History Surat Jalan</h2>
+            <h2>Rincian Surat Jalan</h2>
 
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-          <a href="<?php echo site_url('pemesanan/surat_jalan/'.$dt->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
             <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
               <thead>
                 <tr>
-                  <th>No.Surat Jalan</th>
+                  <th>Nama Barang</th>
                   <th>Jumlah Kirim</th>
                   <th>Tanggal Kirim</th>
-                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-              <?php foreach($tagihan as $tagihan){ ?>
+              <?php foreach($rincian as $rin){ ?>
                 <tr>
-                  <td><?php echo $tagihan->no_sj ?></td>
-                  <td><?php echo $tagihan->total_dikirim ?></td>
-                  <td><?php echo $tagihan->tanggal ?></td>
-                  <td><a href="<?php echo site_url('tagihan/detail/'.$id_order.'/'.$tagihan->no_sj)?>" class="btn btn-primary btn-sm"><span class="fa fa-arrow-left">&nbsp</span>Lihat Rincian</a></td>
+                  <td><?php echo $rin->nama_barang ?></td>
+                  <td><?php echo $rin->dikirim ?></td>
+                  <td><?php//echo $tagihan->tanggal ?></td>
                 </tr>
                 <?php } ?>
               </tbody>
@@ -129,33 +122,3 @@
     </div>
   </div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="modal-body">
-        Body
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(function(){
-  $('.input-pembayaran').on('click', function () {
-    $('#modelId').modal('show');
-  });
-})
-</script>

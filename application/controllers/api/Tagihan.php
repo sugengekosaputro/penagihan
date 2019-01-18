@@ -21,7 +21,21 @@ class Tagihan extends REST_Controller {
     foreach($arrayIdDetail as $arr){
       $arrayId[] = $arr->id_detail_order;
     }
-    $res = $this->tagihan_model->tampilTagihanByIdOrder($arrayId);
+    $res = $this->tagihan_model->tampilHistoryByIdOrder($arrayId);
+    if ($res) {
+      $this->response($res,REST_Controller::HTTP_OK);
+    } else {
+      $this->response([
+        'status' => FALSE,
+        'message' => 'Data Tidak Ada'
+      ],REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function rincian_get()
+  {
+    $id = $this->uri->segment(4);
+    $res = $this->tagihan_model->tampilSjByIdSj($id);
     if ($res) {
       $this->response($res,REST_Controller::HTTP_OK);
     } else {
