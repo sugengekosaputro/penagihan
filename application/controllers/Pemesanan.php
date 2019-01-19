@@ -111,14 +111,6 @@ class Pemesanan extends CI_Controller {
 
 	public function pembayaran()
 	{
-		$id_order = $this->input->post('id_order');
-		// $id_order = '190118001';
-		// $dataidpembayaran = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getPembayaran/'.$id_order));
-		// foreach ($dataidpembayaran as $data ) {
-		// 	$id_pembayaran = $data->id_pembayaran;
-		// 	$dp = $data->dp;	
-		// }
-
 		$totaldp = $this->input->post('dp') + $this->input->post('dibayar');
 
 		$body = [
