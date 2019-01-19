@@ -109,6 +109,33 @@ class Pemesanan extends CI_Controller {
 		}
 	}
 
+	public function pembayaran()
+	{
+		$id_order = $this->input->post('id_order');
+		// $id_order = '190118001';
+		// $dataidpembayaran = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getPembayaran/'.$id_order));
+		// foreach ($dataidpembayaran as $data ) {
+		// 	$id_pembayaran = $data->id_pembayaran;
+		// 	$dp = $data->dp;	
+		// }
+
+		$totaldp = $this->input->post('dp') + $this->input->post('dibayar');
+
+		$body = [
+			'id_order' => $this->input->post('id_order'),
+			'id_pembayaran' => $this->input->post('id_pembayaran'),
+			'total_bayar' => $this->input->post('total_bayar'),
+			'dp' => $totaldp,
+			'dibayar' => $this->input->post('dibayar'),
+			'tanggal' => date('y-m-d'),
+			'status_pembayaran' => 'DP',
+		];
+        $response = json_decode($this->guzzle_post(base_url().'api/','pemesanan/pembayaran',$body));
+        if($response->status){
+        redirect('pemesanan','refresh');
+    	}
+	}
+
 	public function edit($id)
 	{
 		$this->data['content'] = 'barang/edit_barang_view';
