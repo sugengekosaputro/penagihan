@@ -174,6 +174,77 @@ class Pemesanan extends REST_Controller {
 		}
 	}
 
+	public function Pembayaran_post()
+	{
+		$id_order = $this->post('id_order');
+		$dp = $this->post('dp');
+		$total_bayar = $this->post('total_bayar') / 2;
+		$id_pembayaran = $this->post('id_pembayaran');
+
+		$datadetailpembayaran = array(
+			'id_pembayaran' => $this->post('id_pembayaran'),
+			'dibayar' => $this->input->post('dibayar'),
+			'tanggal' => $this->post('tanggal'),
+			);	
+			
+		$insertDetailPembayaran = $this->pemesanan_model->insertDetailPembayaran($datadetailpembayaran);
+		if($insertDetailPembayaran){
+
+			$datapembayaran = array(
+				'dp' => $this->post('dp'),
+				'status_pembayaran' => $this->post('status_pembayaran'),
+				);
+
+			$updatePembayaran = $this->pemesanan_model->updatePembayaran($id_pembayaran,$datapembayaran);
+			if($updatePembayaran){
+				if($dp >= $total_bayar){
+					$dataorder = array(
+						'status_order' => 'Diproses',
+						);
+					$updateOrder = $this->pemesanan_model->updateOrder($id_order,$dataorder);
+					if($updateOrder){
+						$this->response([
+							'status' => TRUE,
+							'message' => 'Data order Berhasil Diupdate',
+						],REST_Controller::HTTP_CREATED);
+					} else {
+						$this->response([
+							'status' => FALSE,
+							'message' => 'Data order Gagal Diupdate',	
+						],REST_Controller::HTTP_BAD_REQUEST);
+					}	
+				} else {
+					$this->response([
+						'status' => FALSE,
+						'message' => 'Data pembayaran Gagal Diupdate',
+					],REST_Controller::HTTP_BAD_REQUEST);
+				}
+		    }
+				
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Data detail pembayaran Gagal Ditambahkan',
+			],REST_Controller::HTTP_BAD_REQUEST);
+		}
+	
+	}
+		
+	public function getPembayaran_get($id_order)
+	{
+		
+		$id_pembayaran = $this->pemesanan_model->tampilPembayaran($id_order);
+		if ($id_pembayaran) {
+			$this->response($id_pembayaran,REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Data Tidak Ada'
+			],REST_Controller::HTTP_NOT_FOUND);
+		}
+		# code...
+	}
+
 	// public function index_post()
 	// {	
 	// 	$tanggal = date('Y-m-d');

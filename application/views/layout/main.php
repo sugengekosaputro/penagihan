@@ -9,8 +9,10 @@
 	  
     <title>Billy Box Bangil </title>
 
-  <!-- Bootstrap -->
+    <!-- Bootstrap -->
     <link href="<?php echo base_url() ?>assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FastClick -->
+    <script src="<?php echo base_url() ?>assets/fastclick/lib/fastclick.js"></script>
     <!-- Font Awesome -->
     <link href="<?php echo base_url() ?>assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
@@ -19,6 +21,10 @@
     <link href="<?php echo base_url() ?>assets/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-wysiwyg -->
     <link href="<?php echo base_url() ?>assets/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+    <script src="<?php echo base_url() ?>assets/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+    <script src="<?php echo base_url() ?>assets/vendors/google-code-prettify/src/prettify.js"></script>
+    <!-- jQuery Tags Input -->
+    <script src="<?php echo base_url() ?>assets/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
     <!-- Select2 -->
     <link href="<?php echo base_url() ?>assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
     <!-- Switchery -->
@@ -207,6 +213,8 @@
     <script src="<?php echo base_url() ?>assets/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
     <script src="<?php echo base_url() ?>assets/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
     <script src="<?php echo base_url() ?>assets/vendors/google-code-prettify/src/prettify.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="<?php echo base_url() ?>assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- jQuery Tags Input -->
     <script src="<?php echo base_url() ?>assets/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
     <!-- Switchery -->

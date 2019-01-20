@@ -49,7 +49,12 @@
                   <tr>
                     <td colspan=3></td>
                     <td class="text-right"><b>DP</td>
-                    <td><b><?php echo $dt->dp ?></b></td>
+                    <td><b><?php echo $dt->total_bayar / 2; ?></b></td>
+                  </tr>
+                  <tr>
+                    <td colspan=3></td>
+                    <td class="text-right"><b>Total Bayar</td>
+                    <td><b><?php echo $dt->dp;; ?></b></td>
                   </tr>
                   <tr class="table table-border-0">
                     <td colspan=3></td>
@@ -135,18 +140,42 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">Input Pembayaran</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
       </div>
-      <div class="modal-body">
-        Body
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
+      <form class="form-horizontal form-label-left input_mask" enctype="multipart/form-data" action="<?php echo site_url('pemesanan/pembayaran')?>" method="POST">
+        <div class="modal-body">
+          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+              <input name="id_order" value="<?php echo $dt->id_order ?>" hidden>
+              <input name ="id_pembayaran" value="<?php echo $dt->id_pembayaran ?>" hidden>
+              <input name ="dp" value="<?php echo $dt->dp ?>" hidden>
+              <input name ="total_bayar" value="<?php echo $dt->total_bayar ?>" hidden>
+              <input type="number" name="dibayar" class="form-control has-feedback-left" id="inputSuccess2" placeholder="total bayar">
+              <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
+          </div>
+          <!-- <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+             <div class="radio">
+                <label>
+                  <input type="radio" class="flat" checked value="Baru" name="check"> Baru
+                </label>
+              </div>
+             <div class="radio">  
+                <label>
+                  <input type="radio" class="flat" value="diproses" name="check"> Diproses
+                </label>
+              </div>
+          </div> -->
+          <div class="form-group">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-success" value="Simpan"/>     
+        </div>
+      </form>  
     </div>
   </div>
 </div>
