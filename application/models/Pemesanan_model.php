@@ -88,6 +88,36 @@ class Pemesanan_model extends CI_Model {
 		}
 	}
 
+	public function tampilDetailOrderSJ($id_order)
+	{
+//		$this->db->select($this->tb_detail_order.'.*, tb_master_barang.nama_barang, tb_pembayaran.total_bayar,tb_pembayaran.dp, (tb_pembayaran.total_bayar - tb_pembayaran.dp) as sisa');
+		$this->db->select($this->tb_detail_order.'.*, tb_master_barang.nama_barang, tb_tagihan.dikirim');
+		$this->db->join('tb_master_barang','tb_detail_order_rev.id_barang = tb_master_barang.id_barang');
+		$this->db->join('tb_pembayaran','tb_detail_order_rev.id_order = tb_pembayaran.id_order');
+		$this->db->join('tb_tagihan','tb_detail_order_rev.id_detail_order = tb_tagihan.id_detail_order');
+		$this->db->where($this->tb_detail_order.'.id_order', $id_order);
+		$query = $this->db->get($this->tb_detail_order);
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return FALSE;
+		}
+	}
+
+	// public function tampilDetailOrderSJ($id_order)
+	// {
+	// 	$this->db->select($this->tb_detail_order.'.*, tb_master_barang.nama_barang, tb_pembayaran.total_bayar,tb_pembayaran.dp, (tb_pembayaran.total_bayar - tb_pembayaran.dp) as sisa');
+	// 	$this->db->join('tb_master_barang','tb_detail_order_rev.id_barang = tb_master_barang.id_barang');
+	// 	$this->db->join('tb_pembayaran','tb_detail_order_rev.id_order = tb_pembayaran.id_order');
+	// 	$this->db->where($this->tb_detail_order.'.id_order', $id_order);
+	// 	$query = $this->db->get($this->tb_detail_order);
+	// 	if ($query->num_rows() > 0) {
+	// 		return $query->result();
+	// 	} else {
+	// 		return FALSE;
+	// 	}
+	// }
+
 	public function tampilHarga($id_order)
 	{
 		$this->db->select('harga');

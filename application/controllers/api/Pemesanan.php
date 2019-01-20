@@ -105,6 +105,21 @@ class Pemesanan extends REST_Controller {
 		}
 	}
 
+	public function getDetailOrderSJ_get()
+	{
+		$id_order = $this->uri->segment(4);
+		$sj = $this->uri->segment(5);
+		$res = $this->pemesanan_model->tampilDetailOrderSJ($id_order);
+		if ($res) {
+			$this->response($res,REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Data Tidak Ada'
+			],REST_Controller::HTTP_NOT_FOUND);
+		}
+	}
+
 	public function index_post()
 	{	
 		$tanggal = date('Y-m-d');

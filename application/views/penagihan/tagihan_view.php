@@ -36,15 +36,21 @@
                   <tr>
                     <td><?php echo $dt->id_barang ?></td>
                     <td><?php echo $dt->nama_barang ?></td>
-                    <td><?php echo $dt->jumlah ?></td>
+                    <td><?php echo $dt->dikirim ?></td>
                     <td><?php echo $dt->harga ?></td>
-                    <td><?php echo $dt->harga * $dt->jumlah ?></td>
+                    <td>
+                      <?php
+                        $tot = $dt->harga * $dt->dikirim;
+                        echo $tot;
+                        $total_bayar[] = $tot;
+                      ?>
+                    </td>
                   </tr>
                 <?php } ?>
                   <tr>
                     <td colspan=3></td>
                     <td class="text-right"><b>Harga Bayar</b></td>
-                    <td><b><?php echo $dt->total_bayar ?></b></td>
+                    <td><b><?php echo array_sum($total_bayar) ?></b></td>
                   </tr>
                   <tr>
                     <td colspan=3></td>
@@ -63,34 +69,11 @@
         </div>   
       </div>
 
-      <?php if($tagihan == null){ ?>
-      <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <h2>History Surat Jalan</h2>
-            <ul class="nav navbar-right panel_toolbox">
-              
-            </ul>
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            Pesanan Belum Dikirim
-            <p class="text-muted font-13 m-b-30">
-              <a href="<?php echo site_url('pemesanan')?>" class="btn btn-primary"><span class="fa fa-arrow-left">&nbsp</span>Kembali</a>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <?php } else { ?>
-
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
             <h2>Rincian Surat Jalan</h2>
-
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
@@ -107,7 +90,7 @@
                 <tr>
                   <td><?php echo $rin->nama_barang ?></td>
                   <td><?php echo $rin->dikirim ?></td>
-                  <td><?php//echo $tagihan->tanggal ?></td>
+                  <td></td>
                 </tr>
                 <?php } ?>
               </tbody>
@@ -118,7 +101,6 @@
           </div>
         </div>
       </div>
-      <?php }?>
     </div>
   </div>
 </div>

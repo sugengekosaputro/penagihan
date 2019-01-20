@@ -17,10 +17,11 @@ class Tagihan extends REST_Controller {
   public function index_get()
   {
     $id = $this->uri->segment(3);
-    $arrayIdDetail = $this->pemesanan_model->tampilDetailOrder($id);
+    $arrayIdDetail = $this->pemesanan_model->tampilDetailOrderSJ($id);
     foreach($arrayIdDetail as $arr){
       $arrayId[] = $arr->id_detail_order;
     }
+
     $res = $this->tagihan_model->tampilHistoryByIdOrder($arrayId);
     if ($res) {
       $this->response($res,REST_Controller::HTTP_OK);

@@ -22,16 +22,10 @@ class Tagihan extends CI_Controller {
     $info = json_decode($this->guzzle_get(base_url().'api/','pemesanan/'.$id_order));
 		$this->data['pelanggan'] = $info[0]->nama_pelanggan;
 		$this->data['tanggal'] = $info[0]->tanggal_order;
-		$this->data['alamat'] = $info[0]->alamat;
-
-		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
-		$tagihan = json_decode($this->guzzle_get(base_url().'api/','tagihan/'.$id_order));
-		if($tagihan == false){
-			$this->data['tagihan'] = null;
-		}else{
-			$this->data['tagihan'] = $tagihan;
-    }
+    $this->data['alamat'] = $info[0]->alamat;
     
+    $detail = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrderSJ/'.$id_order));
+    $this->data['data'] = $detail;
     $this->data['rincian'] = json_decode($this->guzzle_get(base_url().'api/','tagihan/rincian/'.$sj));
 
 		$this->data['content'] = 'penagihan/tagihan_view';
