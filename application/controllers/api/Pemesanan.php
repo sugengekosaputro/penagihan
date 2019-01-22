@@ -17,32 +17,43 @@ class Pemesanan extends REST_Controller {
 		$this->load->model('penagihan_model');
 		$this->load->model('kategori_model');
 		$this->load->model('jual_model');
+		$this->load->model('tagihan_model');
   }
     
 	public function index_get()
 	{
-		$id = $this->uri->segment(3);
-		$res = $this->pemesanan_model->tampilPemesanan();
-		$resId = $this->pemesanan_model->tampilPemesananById($id);
-		if(empty($id)){
-			if ($res) {
-				$this->response($res,REST_Controller::HTTP_OK);
-			} else {
-				$this->response([
-					'status' => FALSE,
-					'message' => 'Data Tidak Ada'
-				],REST_Controller::HTTP_NOT_FOUND);
-			}
+		$res = $this->pemesanan_model->tampilkanOrder();
+		if($res){
+			$this->response($res,REST_Controller::HTTP_OK);
 		}else{
-			if ($resId) {
-				$this->response($resId,REST_Controller::HTTP_OK);
-			} else {
-				$this->response([
-					'status' => FALSE,
-					'message' => 'Data Tidak Ada'
-				],REST_Controller::HTTP_NOT_FOUND);
-			}
+			$this->response([
+				'status' => FALSE,
+				'message' => 'Data Tidak Ada',
+			],REST_Controller::HTTP_NOT_FOUND);
 		}
+	}
+
+	public function detail_get()
+	{
+		$id_order = $this->uri->segment(4);
+		$order = $this->pemesanan_model->tampilkanOrderByIdOrder($id_order);
+		$pelanggan = $this->pelanggan_model->tampilPelangganById($order->id_pelanggan);
+		$order_list = $this->pemesanan_model->tampilDetailOrder($id_order);
+		$pembayaran = $this->pembayaran_model->tampilPembayaranByIdOrder($id_order);
+
+		foreach($order_list as $val){
+			$id_detail_order[] = $val->id_detail_order; 
+		}
+		$surat_jalan = $this->tagihan_model->tampilSuratJalanByIdOrder($id_detail_order);
+
+		$data = array(
+			'pelanggan' => $pelanggan,
+			'order' => $order,
+			'order_list' => $order_list,
+			'pembayaran' => $pembayaran,
+			'surat_jalan' => array('history' => $surat_jalan),
+		);
+		$this->response($data);
 	}
 
 	public function getId_get()
@@ -244,92 +255,6 @@ class Pemesanan extends REST_Controller {
 		}
 		# code...
 	}
-
-	// public function index_post()
-	// {	
-	// 	$tanggal = date('Y-m-d');
-	// 	$waktu = date('H:i:s');
-	// 	$jumlah_order = $this->post('jumlah_order');
-	// 	$dibayarAwal = $this->post('dibayarAwal');
-		
-	// 	$body = array(
-	// 		'id_pelanggan' => $this->post('id_pelanggan'),
-	// 		'id_barang' => $this->post('id_barang'),
-	// 		'jumlah_order' => $jumlah_order,
-	// 		'tanggal_order' => $tanggal,
-	// 		'total_kirim' => '0',
-	// 		'status_order' => 'Proses Pengiriman',
-	// 		'log_time' => $waktu,
-	// 	);
-		
-	// 	$insertPemesanan = $this->pemesanan_model->insertPemesanan($body);
-	// 	if($insertPemesanan){
-	// 		$dataPemesanan = $this->pemesanan_model->tampilPemesananBylog($waktu);
-	// 		$id_order = $dataPemesanan[0]->id_order;
-	// 		$id_pelanggan = $dataPemesanan[0]->id_pelanggan;
-	// 		$id_barang = $dataPemesanan[0]->id_barang;
-	// 		$jumlah_order = $dataPemesanan[0]->jumlah_order;
-
-	// 		$dataBarang = $this->barang_model->tampilBarangById($id_barang);
-	// 		$dataPelanggan = $this->pelanggan_model->tampilPelangganById($id_pelanggan);
-			
-	// 		$hargaBarang = $dataBarang[0]->harga_jual;			
-	// 		$hargaPelanggan = $dataPelanggan[0]->harga_pelanggan;
-	// 		$emailPelanggan = $dataPelanggan[0]->email;
-
-	// 		$total_bayar = ($hargaBarang + $hargaPelanggan) * $jumlah_order;
-
-	// 		if($total_bayar > $dibayarAwal){
-	// 			$bodyPembayaran = array(
-	// 				'id_order' => $id_order,
-	// 				'total_bayar' => $total_bayar,
-	// 				'status_pembayaran' => 'Belum Lunas',
-	// 			);
-	// 		}else{
-	// 			$bodyPembayaran = array(
-	// 				'id_order' => $id_order,
-	// 				'total_bayar' => $total_bayar,
-	// 				'status_pembayaran' => 'Lunas',
-	// 			);
-	// 		}
-	// 		$insertPembayaran = $this->pembayaran_model->insertPembayaran($bodyPembayaran);
-	// 		if($insertPembayaran){
-	// 			$dataPembayaran = $this->pembayaran_model->tampilPembayaranByIdOrder($id_order);
-	// 			$id_pembayaran = $dataPembayaran[0]->id_pembayaran;
-
-	// 			$bodyDetail = array(
-	// 				'id_pembayaran' => $id_pembayaran,
-	// 				'dibayar' => $dibayarAwal,
-	// 				'tanggal' => $tanggal,
-	// 			);
-	// 			$insertDetailPembayaran = $this->pembayaran_model->insertDetailPembayaran($bodyDetail);
-	// 			if($insertDetailPembayaran){
-	// 				$sendEmail = $this->notifEmail($id_order,$emailPelanggan);
-	// 				if($sendEmail){
-	// 					$this->response([
-	// 						'status' => TRUE,
-	// 						'message' => 'Tagihan Berhasil Dikirim',
-	// 					],REST_Controller::HTTP_OK);
-	// 				}else{
-	// 					$this->response([
-	// 						'status' => FALSE,
-	// 						'message' => 'Data Gagal Dikirim',
-	// 					],REST_Controller::HTTP_BAD_REQUEST);
-	// 				}
-	// 			} else {
-	// 				$this->response([
-	// 					'status' => FALSE,
-	// 					'message' => 'Data Gagal Ditambahkan',
-	// 				],REST_Controller::HTTP_BAD_REQUEST);
-	// 			}
-	// 		}
-	// 	} else {
-	// 		$this->response([
-	// 			'status' => FALSE,
-	// 			'message' => 'Data Gagal Ditambahkan',
-	// 		],REST_Controller::HTTP_BAD_REQUEST);
-	// 	}
-	// }
 
 	public function tesinput_post()
 	{

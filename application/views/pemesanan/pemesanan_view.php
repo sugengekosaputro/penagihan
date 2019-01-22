@@ -17,7 +17,6 @@
               <p class="text-muted font-13 m-b-30">
                   <a href="<?php echo site_url()?>pemesanan/tambah" class="btn btn-primary"><span class="fa fa-plus">&nbsp</span>Tambah</a>
               </p>
-              
               <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap col-xs-12" cellspacing="0" width="100%">
                 <thead>
                   <tr>
@@ -25,7 +24,7 @@
                     <th>Nama Pelanggan</th>
                     <th>Alamat</th>
                     <th>Tanggal Order</th>
-                    <th>Total Pesanan</th>
+                    <th>Status</th>
                     <th>Total Kirim</th>
                     <th>Aksi</th>
                   </tr>
@@ -37,7 +36,10 @@
                       <td><?php echo $dt->nama_pelanggan ?></td>
                       <td><?php echo $dt->alamat ?></td>
                       <td><?php echo $dt->tanggal_order ?></td>
-                      <td><?php echo ''?></td>
+                      <td>
+                        Order : <?php echo $dt->status_order ?> <br>
+                        Pembayaran : <?php echo $dt->status_pembayaran ?>
+                      </td>
                       <td style="color:red"><?php echo ''?></td>
                     <td>
                       <a href="<?php echo site_url('pemesanan/detail/'.$dt->id_order) ?>" class="btn btn-success"><span class="fa fa-list">&nbsp</span>Detail</a>

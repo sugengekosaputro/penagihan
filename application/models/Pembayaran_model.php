@@ -20,22 +20,28 @@ class Pembayaran_model extends CI_Model {
 		$this->db->where('id_pembayaran', $id_pembayaran);
 		$query = $this->db->get($this->tabel);
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			foreach($query->result() as $val){
+				$res = $val;
+			}
+			return $res;
 		} else {
 			return FALSE;
 		}
-    }
+  }
     
 	public function tampilPembayaranByIdOrder($id_order)
 	{
 		$this->db->where('id_order', $id_order);
 		$query = $this->db->get($this->tabel);
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			foreach($query->result() as $val){
+				$res = $val;
+			}
+			return $res;
 		} else {
 			return FALSE;
 		}
-    }
+  }
 
 	public function insertPembayaran($data)
 	{
