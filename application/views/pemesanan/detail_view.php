@@ -13,11 +13,11 @@
             <div class="x_content">
             <table class="table nowrap" cellspacing="0" width="100%" >
               <tr>
-                <td style="border-top:none"><?php echo $pelanggan ?></td>
-                <td class="text-right" style="border-top:none"><?php echo date('d F Y', strtotime($tanggal)); ?></td>
+                <td style="border-top:none"><?php echo $pelanggan->nama_pelanggan ?></td>
+                <td class="text-right" style="border-top:none"><?php echo date('d F Y', strtotime($order->tanggal_order)); ?></td>
               </tr>
               <tr>
-                <td style="border-top:none"><?php echo $alamat ?></td>
+                <td style="border-top:none"><?php echo $pelanggan->alamat ?></td>
                 <td class="text-right" style="border-top:none"></td>
               </tr>
             </table>
@@ -27,51 +27,53 @@
                     <th>Id Barang</th>
                     <th>Nama Barang</th>
                     <th>Jml Order</th>
+                    <th>Sudah Dikirim</th>
                     <th>Harga</th>
                     <th>Jumlah</th>
                   </tr>
                 </thead>
                 <tbody>
-                <?php foreach($data as $dt){?>
+                <?php foreach($order_list as $val){?>
                   <tr>
-                    <td><?php echo $dt->id_barang ?></td>
-                    <td><?php echo $dt->nama_barang ?></td>
-                    <td><?php echo $dt->jumlah ?></td>
-                    <td><?php echo $dt->harga ?></td>
-                    <td><?php echo $dt->harga * $dt->jumlah ?></td>
+                    <td><?php echo $val->id_barang ?></td>
+                    <td><?php echo $val->nama_barang ?></td>
+                    <td><?php echo $val->jumlah ?></td>
+                    <td><?php  ?></td>
+                    <td><?php echo $val->harga ?></td>
+                    <td><?php echo $val->harga * $val->jumlah ?></td>
                   </tr>
                 <?php } ?>
                   <tr>
-                    <td colspan=3></td>
+                    <td colspan=4></td>
                     <td class="text-right"><b>Harga Bayar</b></td>
-                    <td><b><?php echo $dt->total_bayar ?></b></td>
+                    <td><b><?php echo 'No Problem'//$pembayaran->total_bayar ?></b></td>
                   </tr>
                   <tr>
-                    <td colspan=3></td>
-                    <td class="text-right"><b>DP</td>
-                    <td><b><?php echo $dt->total_bayar / 2; ?></b></td>
+                    <td colspan=4></td>
+                    <td class="text-right"><b>DP 50%</td>
+                    <td><b><?php echo 'No Problem'//$pembayaran->total_bayar / 2; ?></b></td>
                   </tr>
                   <tr>
-                    <td colspan=3></td>
+                    <td colspan=4></td>
                     <td class="text-right"><b>Total Bayar</td>
-                    <td><b><?php echo $dt->dp;; ?></b></td>
+                    <td><b><?php echo 'BELUM'; ?></b></td>
                   </tr>
                   <tr class="table table-border-0">
-                    <td colspan=3></td>
+                    <td colspan=4></td>
                     <td class="text-right"><b>Sisa Pembayaran</b></td>
-                    <td><b><?php echo $dt->sisa ?></b></td>
+                    <td><b><?php //echo $dt->sisa ?></b></td>
                   </tr>
                 </tbody>
               </table>
-              <h4>Status Order : <label> <?php echo $order ?></label></h4>
-              <h4>Status Bayar : <label> <?php echo $bayar ?></label></h4>
+              <h4>Status Order : <label> <?php echo $order->status_order ?></label></h4>
+              <h4>Status Bayar : <label> <?php echo 'OK_FINE'//echo $pembayaran->status_pembayaran ?></label></h4>
               <a href="#" class="btn btn-primary input-pembayaran"><span class="fa fa-shopping-cart"> &nbsp</span>Input Pembayaran</a>
             </div>
           </div>
         </div>   
       </div>
 
-      <?php if($tagihan == null){ ?>
+      <?php if(!$surat_jalan->history){ //false ?>
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
@@ -84,7 +86,7 @@
           </div>
           <div class="x_content">
             Pesanan Belum Dikirim
-            <a href="<?php echo site_url('pemesanan/surat_jalan/'.$dt->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
+            <a href="<?php echo site_url('pemesanan/surat_jalan/'.$order->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
             <p class="text-muted font-13 m-b-30">
               <a href="<?php echo site_url('pemesanan')?>" class="btn btn-primary"><span class="fa fa-arrow-left">&nbsp</span>Kembali</a>
             </p>
@@ -103,7 +105,7 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-          <a href="<?php echo site_url('pemesanan/surat_jalan/'.$dt->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
+          <a href="<?php echo site_url('pemesanan/surat_jalan/'.$order->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
             <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -114,12 +116,12 @@
                 </tr>
               </thead>
               <tbody>
-              <?php foreach($tagihan as $tagihan){ ?>
+              <?php foreach($list as $list){ ?>
                 <tr>
-                  <td><?php echo $tagihan->no_sj ?></td>
-                  <td><?php echo $tagihan->total_dikirim ?></td>
-                  <td><?php echo $tagihan->tanggal ?></td>
-                  <td><a href="<?php echo site_url('tagihan/detail/'.$id_order.'/'.$tagihan->no_sj)?>" class="btn btn-primary btn-sm"><span class="fa fa-arrow-left">&nbsp</span>Lihat Rincian</a></td>
+                  <td><?php echo $list->no_sj ?></td>
+                  <td><?php echo $list->total ?></td>
+                  <td><?php echo $list->tanggal ?></td>
+                  <td><a href="<?php// echo site_url('tagihan/detail/'.$id_order.'/'.$tagihan->no_sj)?>" class="btn btn-primary btn-sm"><span class="fa fa-arrow-left">&nbsp</span>Lihat Rincian</a></td>
                 </tr>
                 <?php } ?>
               </tbody>
@@ -148,10 +150,10 @@
       <form class="form-horizontal form-label-left input_mask" enctype="multipart/form-data" action="<?php echo site_url('pemesanan/pembayaran')?>" method="POST">
         <div class="modal-body">
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-              <input name="id_order" value="<?php echo $dt->id_order ?>" hidden>
-              <input name ="id_pembayaran" value="<?php echo $dt->id_pembayaran ?>" hidden>
-              <input name ="dp" value="<?php echo $dt->dp ?>" hidden>
-              <input name ="total_bayar" value="<?php echo $dt->total_bayar ?>" hidden>
+              <input name="id_order" value="<?php //echo $dt->id_order ?>" hidden>
+              <input name ="id_pembayaran" value="<?php //echo $dt->id_pembayaran ?>" hidden>
+              <input name ="dp" value="<?php// echo $dt->dp ?>" hidden>
+              <input name ="total_bayar" value="<?php //echo $dt->total_bayar ?>" hidden>
               <input type="number" name="dibayar" class="form-control has-feedback-left" id="inputSuccess2" placeholder="total bayar">
               <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
           </div>

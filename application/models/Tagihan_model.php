@@ -7,22 +7,26 @@ class Tagihan_model extends CI_Model {
 	private $tb_detail_order = 'tb_detail_order_rev';
 	private $tb_barang = 'tb_master_barang';
 
-  public function tampilHistoryByIdOrder($arrayId)
+	public function tampilSuratJalanByIdOrder($arrayId)
 	{
-		$this->db->distinct();
-		$this->db->select(
-			'tb_tagihan.*,tb_detail_order_rev.id_barang,
-			'.$this->tb_barang.'.nama_barang, sum(tb_tagihan.dikirim) as total_dikirim'
-		);
-		$this->db->join('tb_detail_order_rev','tb_detail_order_rev.id_detail_order = tb_tagihan.id_detail_order');
-		$this->db->join(
-			$this->tb_barang,$this->tb_barang.'.id_barang = '.$this->tb_detail_order.'.id_barang');
+		$this->db->select('
+		tb_tagihan.id_tagihan,tb_tagihan.no_sj,SUM(tb_tagihan.dikirim) as total,tb_tagihan.tanggal,
+		');
 		$this->db->where_in('tb_tagihan.id_detail_order', $arrayId);
 		$this->db->group_by('tb_tagihan.no_sj');
-
 		$query = $this->db->get($this->tb_tagihan);
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			$result = array();
+			foreach($query->result() as $key => $val){
+				$query2 = $this->db->where('tb_tagihan.no_sj',$val->no_sj)->get($this->tb_tagihan);
+				
+				$array[] = array(
+					'no_sj'=>$val->no_sj,
+					'tanggal'=>$val->tanggal,
+					'total'=> $val->total,
+					'list'=>$query2->result());
+			}
+			return $array;
 		} else {
 			return FALSE;
 		}

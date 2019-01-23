@@ -76,15 +76,34 @@ class Pemesanan_model extends CI_Model {
 		}
 	}
 
+	// public function tampilDetailOrder($id_order)
+	// {
+	// 	$this->db->select($this->tb_detail_order.'.*, tb_master_barang.nama_barang, tb_pembayaran.total_bayar,tb_pembayaran.dp, tb_pembayaran.id_pembayaran, (tb_pembayaran.total_bayar - tb_pembayaran.dp) as sisa');
+	// 	$this->db->join('tb_master_barang','tb_detail_order_rev.id_barang = tb_master_barang.id_barang');
+	// 	$this->db->join('tb_pembayaran','tb_detail_order_rev.id_order = tb_pembayaran.id_order');
+	// 	$this->db->where($this->tb_detail_order.'.id_order', $id_order);
+	// 	$query = $this->db->get($this->tb_detail_order);
+	// 	if ($query->num_rows() > 0) {
+	// 		foreach($query->result() as $val){
+	// 			$res[] = $val;
+	// 		}
+	// 		return $res;
+	// 	} else {
+	// 		return FALSE;
+	// 	}
+	// }
+
 	public function tampilDetailOrder($id_order)
 	{
-		$this->db->select($this->tb_detail_order.'.*, tb_master_barang.nama_barang, tb_pembayaran.total_bayar,tb_pembayaran.dp, tb_pembayaran.id_pembayaran, (tb_pembayaran.total_bayar - tb_pembayaran.dp) as sisa');
+		$this->db->select($this->tb_detail_order.'.*, tb_master_barang.nama_barang');
 		$this->db->join('tb_master_barang','tb_detail_order_rev.id_barang = tb_master_barang.id_barang');
-		$this->db->join('tb_pembayaran','tb_detail_order_rev.id_order = tb_pembayaran.id_order');
 		$this->db->where($this->tb_detail_order.'.id_order', $id_order);
 		$query = $this->db->get($this->tb_detail_order);
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			foreach($query->result() as $val){
+				$res[] = $val;
+			}
+			return $res;
 		} else {
 			return FALSE;
 		}
@@ -228,6 +247,49 @@ class Pemesanan_model extends CI_Model {
 			return true;
 		}else {
 			return false;
+		}
+	}
+
+	public function tampilkanOrder()
+	{
+		$this->db->select(
+			'tb_order_rev.*,tb_pelanggan.nama_pelanggan,tb_pelanggan.alamat,
+			tb_pembayaran.status_pembayaran'
+		)
+		->join($this->tb_pelanggan,'tb_pelanggan.id_pelanggan = tb_order_rev.id_pelanggan')
+		->join($this->tb_pembayaran,'tb_pembayaran.id_order = tb_order_rev.id_order')
+		->order_by("tb_order_rev.id_order","DESC");
+		$query = $this->db->get($this->tb_order);
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function tampilkanOrderByIdOrder($id_order)
+	{
+		$this->db->where("tb_order_rev.id_order",$id_order);
+		$query = $this->db->get($this->tb_order);
+		if ($query->num_rows() > 0) {
+			foreach($query->result() as $val){
+				$query2 = $this->db->select($this->tb_detail_order.'.*,tb_master_barang.nama_barang')
+				->where('tb_detail_order_rev.id_order',$val->id_order)
+				->join('tb_master_barang','tb_master_barang.id_barang = tb_detail_order_rev.id_barang')
+				->get($this->tb_detail_order);
+
+				$res = array(
+					'id_order' => $val->id_order,
+					'id_pelanggan' => $val->id_pelanggan,
+					'tanggal_order' => $val->tanggal_order,
+					'status_order' => $val->status_order,
+					'log_time' => $val->log_time,
+					'detail_order' => $query2->result(),
+				);
+			}
+			return $res;
+		} else {
+			return FALSE;
 		}
 	}
 }

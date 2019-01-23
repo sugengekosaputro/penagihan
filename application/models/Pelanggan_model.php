@@ -21,7 +21,10 @@ class Pelanggan_model extends CI_Model {
 		$this->db->where('id_pelanggan', $id);
 		$query = $this->db->get($this->tb_pelanggan);
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			foreach($query->result() as $val){
+				$res = $val;
+			}
+			return $val;
 		} else {
 			return FALSE;
 		}

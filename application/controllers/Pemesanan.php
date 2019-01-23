@@ -21,33 +21,17 @@ class Pemesanan extends CI_Controller {
 		$this->load->view('layout/main', $this->data);
 	}
 
-  public function riwayat()
-  	{
-		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/riwayat'));
-		$this->data['content'] = 'pemesanan/riwayat_view';
-    $this->load->view('layout/main', $this->data);
-	}
-
 	public function detail()
 	{
 		$id_order = $this->uri->segment(3);
-		$info = json_decode($this->guzzle_get(base_url().'api/','pemesanan/'.$id_order));
-		$this->data['pelanggan'] = $info[0]->nama_pelanggan;
-		$this->data['tanggal'] = $info[0]->tanggal_order;
-		$this->data['alamat'] = $info[0]->alamat;
-		$this->data['order'] = $info[0]->status_order;
-		$this->data['bayar'] = $info[0]->status_pembayaran;
-
-		$detail = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
-		$this->data['data'] = $detail;
-
-		$tagihan = json_decode($this->guzzle_get(base_url().'api/','tagihan/'.$id_order));
-		if($tagihan == false){
-			$this->data['tagihan'] = null;
-		}else{
-			$this->data['tagihan'] = $tagihan;
-			$this->data['id_order'] = $id_order;
-		}
+		$data = json_decode($this->guzzle_get(base_url().'api/','pemesanan/detail/'.$id_order));
+		
+		$this->data['pelanggan'] = $data->pelanggan;
+		$this->data['order'] = $data->order;
+		$this->data['order_list'] = $this->data['order']->detail_order;
+		$this->data['pembayaran'] = $data->pembayaran;
+		$this->data['surat_jalan'] = $data->surat_jalan;
+		$this->data['list'] = $this->data['surat_jalan']->history;
 
 		$this->data['content'] = 'pemesanan/detail_view';
 		$this->load->view('layout/main', $this->data);
@@ -56,7 +40,12 @@ class Pemesanan extends CI_Controller {
 	public function surat_jalan()
 	{
 		$id_order = $this->uri->segment(3);
-		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
+		$data = json_decode($this->guzzle_get(base_url().'api/','pemesanan/detail/'.$id_order));
+		$this->data['order'] = $data->order;
+		$this->data['order_list'] = $this->data['order']->detail_order;
+
+//		$this->data['history'] =  $data->surat_jalan->history;
+		//$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
 		$this->data['content'] = 'pemesanan/surat_jalan_view';
 		$this->load->view('layout/main', $this->data);
 	}
