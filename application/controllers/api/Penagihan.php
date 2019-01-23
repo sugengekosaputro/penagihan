@@ -11,6 +11,7 @@ class Penagihan extends REST_Controller {
 	{
 		parent::__construct();
 		$this->load->model('penagihan_model');
+		$this->load->model('tagihan_model');
     }
     
 	public function index_get()
@@ -37,9 +38,9 @@ class Penagihan extends REST_Controller {
 				],REST_Controller::HTTP_NOT_FOUND);
 			}
 		}
-    }
+  }
 
-    public function riwayat_get()
+  public function riwayat_get()
 	{
 		$res = $this->penagihan_model->tampilRiwayatPenagihan();
 			if ($res) {
@@ -50,5 +51,22 @@ class Penagihan extends REST_Controller {
 					'message' => 'Data Tidak Ada'
 				],REST_Controller::HTTP_NOT_FOUND);
 			}
+	}
+
+	public function suratjalan_post()
+	{
+		$sj = $this->post('surat_jalan');
+		$insertSj = $this->tagihan_model->insertSuratJalan($sj);
+		if($insertSj){
+			$this->response([
+				'status' => TRUE,
+				'message' => 'Berhasil Input Surat Jalan',
+			],REST_Controller::HTTP_OK);
+		}else{
+			$this->response([
+				'status' => FALSE,
+			 'message' => 'Gagal Input Surat Jalan',
+		 ],REST_Controller::HTTP_BAD_REQUEST);
+		}
 	}
 }
