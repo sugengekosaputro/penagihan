@@ -37,7 +37,7 @@ class Pemesanan extends REST_Controller {
 	{
 		$id_order = $this->uri->segment(4);
 		$order = $this->pemesanan_model->tampilkanOrderByIdOrder($id_order);
-		$pelanggan = $this->pelanggan_model->tampilPelangganById($order->id_pelanggan);
+		$pelanggan = $this->pelanggan_model->tampilPelangganById($order['id_pelanggan']);
 		$order_list = $this->pemesanan_model->tampilDetailOrder($id_order);
 		$pembayaran = $this->pembayaran_model->tampilPembayaranByIdOrder($id_order);
 
@@ -49,7 +49,7 @@ class Pemesanan extends REST_Controller {
 		$data = array(
 			'pelanggan' => $pelanggan,
 			'order' => $order,
-			'order_list' => $order_list,
+//			'order_list' => $order_list,
 			'pembayaran' => $pembayaran,
 			'surat_jalan' => array('history' => $surat_jalan),
 		);

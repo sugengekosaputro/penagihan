@@ -28,18 +28,10 @@ class Pemesanan extends CI_Controller {
 		
 		$this->data['pelanggan'] = $data->pelanggan;
 		$this->data['order'] = $data->order;
-		$this->data['order_list'] = $data->order_list;
+		$this->data['order_list'] = $this->data['order']->detail_order;
 		$this->data['pembayaran'] = $data->pembayaran;
 		$this->data['surat_jalan'] = $data->surat_jalan;
 		$this->data['list'] = $this->data['surat_jalan']->history;
-
-		// $tagihan = json_decode($this->guzzle_get(base_url().'api/','tagihan/'.$id_order));
-		// if($tagihan == false){
-		// 	$this->data['tagihan'] = null;
-		// }else{
-		// 	$this->data['tagihan'] = $tagihan;
-		// 	$this->data['id_order'] = $id_order;
-		// }
 
 		$this->data['content'] = 'pemesanan/detail_view';
 		$this->load->view('layout/main', $this->data);
@@ -48,7 +40,12 @@ class Pemesanan extends CI_Controller {
 	public function surat_jalan()
 	{
 		$id_order = $this->uri->segment(3);
-		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
+		$data = json_decode($this->guzzle_get(base_url().'api/','pemesanan/detail/'.$id_order));
+		$this->data['order'] = $data->order;
+		$this->data['order_list'] = $this->data['order']->detail_order;
+
+//		$this->data['history'] =  $data->surat_jalan->history;
+		//$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
 		$this->data['content'] = 'pemesanan/surat_jalan_view';
 		$this->load->view('layout/main', $this->data);
 	}

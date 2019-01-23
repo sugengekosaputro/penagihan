@@ -86,7 +86,7 @@
           </div>
           <div class="x_content">
             Pesanan Belum Dikirim
-            <a href="<?php echo site_url('pemesanan/surat_jalan/') ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
+            <a href="<?php echo site_url('pemesanan/surat_jalan/'.$order->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
             <p class="text-muted font-13 m-b-30">
               <a href="<?php echo site_url('pemesanan')?>" class="btn btn-primary"><span class="fa fa-arrow-left">&nbsp</span>Kembali</a>
             </p>
@@ -105,7 +105,7 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-          <a href="<?php echo site_url('pemesanan/surat_jalan/') ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
+          <a href="<?php echo site_url('pemesanan/surat_jalan/'.$order->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
             <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
               <thead>
                 <tr>

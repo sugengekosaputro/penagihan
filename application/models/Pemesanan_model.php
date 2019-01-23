@@ -273,7 +273,19 @@ class Pemesanan_model extends CI_Model {
 		$query = $this->db->get($this->tb_order);
 		if ($query->num_rows() > 0) {
 			foreach($query->result() as $val){
-				$res = $val;
+				$query2 = $this->db->select($this->tb_detail_order.'.*,tb_master_barang.nama_barang')
+				->where('tb_detail_order_rev.id_order',$val->id_order)
+				->join('tb_master_barang','tb_master_barang.id_barang = tb_detail_order_rev.id_barang')
+				->get($this->tb_detail_order);
+
+				$res = array(
+					'id_order' => $val->id_order,
+					'id_pelanggan' => $val->id_pelanggan,
+					'tanggal_order' => $val->tanggal_order,
+					'status_order' => $val->status_order,
+					'log_time' => $val->log_time,
+					'detail_order' => $query2->result(),
+				);
 			}
 			return $res;
 		} else {
