@@ -63,6 +63,21 @@ class Barang_model extends CI_Model {
 		}
 	}
 
+	public function caribarang($keyword){
+		$this->db->like('nama_barang',$keyword, 'both');
+		$this->db->group_by('nama_barang', 'ASC');
+		return $this->db->get('tb_master_barang')->result();
+	}
+
+	public function caripartisi($keyword){
+		$this->db->select('tb_master_barang.*,tb_kategori_barang.*');
+		$this->db->join('tb_kategori_barang','tb_kategori_barang.id_kategori = tb_master_barang.id_kategori');
+		$this->db->where('tb_kategori_barang.jenis_barang', 'partisi');
+		$this->db->like('nama_barang',$keyword, 'both');
+		$this->db->group_by('nama_barang', 'ASC');
+		return $this->db->get('tb_master_barang')->result();
+	}
+
 	public function insertBarang($data)
 	{
 		$this->db->insert($this->tabel, $data);

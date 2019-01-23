@@ -40,6 +40,38 @@ class Barang extends REST_Controller {
 		}
 	}
 
+	public function caribarang_post(){
+		$keyword = $this->post('keyword');
+	
+			$result = $this->barang_model->caribarang($keyword);
+			if (count($result) > 0) {
+				foreach ($result as $row){
+					$arr['query'] = $keyword;
+					$arr['suggestions'][] = array(
+						'value'	=>$row->nama_barang,
+						'id'	=>$row->id_barang,
+					);
+				}
+		  }
+			echo json_encode($arr);
+	}
+
+	public function caripartisi_post(){
+		$keyword = $this->post('keyword');
+	
+			$result = $this->barang_model->caripartisi($keyword);
+			if (count($result) > 0) {
+				foreach ($result as $row){
+					$arr['query'] = $keyword;
+					$arr['suggestions'][] = array(
+						'value'	=>$row->nama_barang,
+						'id'	=>$row->id_barang,
+					);
+				}
+		  }
+			echo json_encode($arr);
+	}
+
 	public function stok_get()
 	{
 		$id_barang = $this->uri->segment(4);
