@@ -7,21 +7,49 @@ class Penagihan extends CI_Controller {
 		'content' => 'penagihan/penagihan_view'
 	);
 
-    public function __construct()
+  public function __construct()
 	{
-        parent::__construct();
+    parent::__construct();
 	}
 
-    public function index()
-    {
-        $this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','penagihan'));
-        $this->load->view('layout/main', $this->data);
-    }
+  public function index()
+	{
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','penagihan'));
+		$this->load->view('layout/main', $this->data);
+	}
     
-    public function riwayat()
-    {
-        $this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','penagihan/riwayat'));
-        $this->load->view('layout/main', $this->data);
+	public function riwayat()
+	{
+		$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','penagihan/riwayat'));
+		$this->load->view('layout/main', $this->data);
+	}
+
+	public function simpan_sj()
+	{
+		$no_sj = $this->input->post('no_sj');
+		$id_detail_order = $this->input->post('id_detail_order');
+		$dikirm = $this->input->post('dikirim');
+		$tanggal = date('Y-m-d');
+
+		$lenght = count($id_detail_order);
+		$i = 0;
+
+		while($i < $lenght){
+			$array[] = array(
+				'no_sj' => $no_sj,
+				'id_detail_order' => $id_detail_order[$i],
+				'dikirim' => $dikirm[$i],
+				'tanggal' => $tanggal,
+			);
+			$i++;
+		}
+		
+		$body = ['surat_jalan'=>$array];
+//		echo json_encode($body);
+		$response = json_decode($this->guzzle_post(base_url().'api/','penagihan/suratjalan',$body));
+		if($response->status){
+			echo json_encode($response);
+		}
 	}
 
 	public function pdfview()
@@ -118,150 +146,10 @@ class Penagihan extends CI_Controller {
         $this->load->view('layout/main', $this->data);
 	}
 	
-
-
-	public function simpan()
-	{
-		if(empty($_FILES['foto_barang']['name'])){
-			echo 'harus upload bro';
-		}else{
-			$body = [
-				[
-					'name' => 'id_barang',
-					'contents' => $this->input->post('nama_barang'),
-				],
-				[
-					'name' => 'nama_barang',
-					'contents' => $this->input->post('nama_barang'),
-				],
-				[
-					'name' => 'ukuran',
-					'contents' => $this->input->post('ukuran'),
-				],
-				[
-					'name' => 'gramatur',
-					'contents' => $this->input->post('gramatur'),
-				],
-				[
-					'name' => 'foto_barang',
-					'contents' => fopen($_FILES['foto_barang']['tmp_name'], 'r'),
-					'filename' => $_FILES['foto_barang']['name'],
-					'headers' => [
-						'content-type' => 'image/jpeg'
-					]
-				],
-				[
-					'name' => 'harga_beli',
-					'contents' => $this->input->post('harga_beli'),
-				],
-				[
-					'name' => 'harga_jual',
-					'contents' => $this->input->post('harga_jual'),
-				],
-			];
-			$response = json_decode($this->guzzle_post(base_url().'api/','barang',$body));
-			if($response->status){
-				redirect('barang','refresh');
-			}
-		}
-	}
-
 	public function tambah()
 	{
 		$this->data['content'] = 'penagihan/tambah_view';
 		$this->load->view('layout/main', $this->data);
-	}
-
-	public function editform()
-	{
-		if(empty($_FILES['foto_barang']['name'])){
-			$body = [
-				[
-					'name' => 'id_barang',
-					'contents' => $this->input->post('id_barang'),
-				],
-				[
-					'name' => 'nama_barang',
-					'contents' => $this->input->post('nama_barang'),
-				],
-				[
-					'name' => 'ukuran',
-					'contents' => $this->input->post('ukuran'),
-				],
-				[
-					'name' => 'gramatur',
-					'contents' => $this->input->post('gramatur'),
-				],
-				[
-					'name' => 'foto_barang',
-					'contents' => $this->input->post('foto_lama'),
-				],
-				[
-					'name' => 'harga_beli',
-					'contents' => $this->input->post('harga_beli'),
-				],
-				[
-					'name' => 'harga_jual',
-					'contents' => $this->input->post('harga_jual'),
-				],
-			];
-
-			$response = json_decode($this->guzzle_put(base_url().'api/','barang/update',$body));
-			if($response->status){
-				redirect('barang','refresh');
-			}
-		}else{
-			$body = [
-				[
-					'name' => 'id_barang',
-					'contents' => $this->input->post('id_barang'),
-				],
-				[
-					'name' => 'nama_barang',
-					'contents' => $this->input->post('nama_barang'),
-				],
-				[
-					'name' => 'ukuran',
-					'contents' => $this->input->post('ukuran'),
-				],
-				[
-					'name' => 'gramatur',
-					'contents' => $this->input->post('gramatur'),
-				],
-				[
-					'name' => 'foto_barang',
-					'contents' => fopen($_FILES['foto_barang']['tmp_name'], 'r'),
-					'filename' => $_FILES['foto_barang']['name'],
-					'headers' => [
-						'content-type' => 'image/jpeg'
-					]
-				],
-				[
-					'name' => 'harga_beli',
-					'contents' => $this->input->post('harga_beli'),
-				],
-				[
-					'name' => 'harga_jual',
-					'contents' => $this->input->post('harga_jual'),
-				],
-			];
-			
-			$response = json_decode($this->guzzle_put(base_url().'api/','barang/update',$body));
-			if($response->status){
-				redirect('barang','refresh');
-			}
-		}
-	}
-
-	public function hapus($id_barang)
-	{
-		$body = [
-			'id_barang' => $id_barang,
-		];
-		$response = json_decode($this->guzzle_delete(base_url().'api/','barang',$body));
-		 if($response->status){
-			redirect('barang','refresh');
-		}
 	}
 
 	public function guzzle_get($url,$uri)
@@ -273,11 +161,17 @@ class Penagihan extends CI_Controller {
 
 	public function guzzle_post($url,$uri,$body)
 	{
-		$client = new GuzzleHttp\Client(['base_uri' => $url]);
-		$response = $client->request('POST',$uri,[
-			'multipart' => $body,
-		]);
-		return $response->getBody();
+		try{
+			$client = new GuzzleHttp\Client(['base_uri' => $url]);
+			$response = $client->request('POST',$uri,[
+				'form_params' => $body,
+			]);
+			return $response->getBody();
+		}catch(GuzzleHttp\Exception\ClientException $e){
+			$response = $e->getResponse();
+			$responseBodyAsString = $response->getBody()->getContents();
+			redirect('pemesanan','refresh');
+		}
 	}
 
 	public function guzzle_put($url,$uri,$body)

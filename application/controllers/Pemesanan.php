@@ -43,9 +43,6 @@ class Pemesanan extends CI_Controller {
 		$data = json_decode($this->guzzle_get(base_url().'api/','pemesanan/detail/'.$id_order));
 		$this->data['order'] = $data->order;
 		$this->data['order_list'] = $this->data['order']->detail_order;
-
-//		$this->data['history'] =  $data->surat_jalan->history;
-		//$this->data['data'] = json_decode($this->guzzle_get(base_url().'api/','pemesanan/getDetailOrder/'.$id_order));
 		$this->data['content'] = 'pemesanan/surat_jalan_view';
 		$this->load->view('layout/main', $this->data);
 	}
@@ -53,7 +50,6 @@ class Pemesanan extends CI_Controller {
 	public function tambah()
 	{
 		$this->data['content'] = 'pemesanan/tambah_pemesanan_update';
-//		$this->data['content'] = 'pemesanan/tambah_pemesanan_view';
 		$this->load->view('layout/main', $this->data);
 	}
 
@@ -63,12 +59,6 @@ class Pemesanan extends CI_Controller {
 		$harga = $this->input->post('harga_barang');
 		$barang = $this->input->post('id_barang');
 		$jumlah = $this->input->post('jumlah_order');
-		//$status = $this->input->post('cekdp');
-		// if(isset($status)){
-		// 	$dp = 'DP';
-		// }else{
-		// 	$dp = 'Belum DP';
-		// }
 
 		$lenght = count($barang);
 		$i = 0;

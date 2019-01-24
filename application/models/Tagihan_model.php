@@ -53,7 +53,7 @@ class Tagihan_model extends CI_Model {
 
 	public function insertSuratJalan($data)
 	{
-		$this->db->insert($this->tb_tagihan, $data);
+		$this->db->insert_batch($this->tb_tagihan, $data);
 		if ($this->db->affected_rows()>0) {
 			return TRUE;
 		} else {
