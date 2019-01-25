@@ -318,7 +318,7 @@
                       <p>Yth :</p> 
                       <?php foreach($data as $data){ 
                         echo "<p> $data->nama_pelanggan </p>"; }?>
-                        <p>Silahkan download nota dibawah ini</p>
+                        <p>Silahkan download nota anda dibawah ini</p>
                         <img widht="100px" height="100px" src="http://fabinur.000webhostapp.com/assets/images/telunjuk.png"/>
                       </td>
                       <td align="right">

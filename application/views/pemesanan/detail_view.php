@@ -68,6 +68,7 @@
               <h4>Status Order : <label> <?php echo $order->status_order ?></label></h4>
               <h4>Status Bayar : <label> <?php echo 'OK_FINE'//echo $pembayaran->status_pembayaran ?></label></h4>
               <a href="#" class="btn btn-primary input-pembayaran"><span class="fa fa-shopping-cart"> &nbsp</span>Input Pembayaran</a>
+              <a href="<?php echo base_url('').$order->id_order; ?>" class="btn btn-primary"><span class="fa fa-shopping-cart"> &nbsp</span>Kirim email</a>
             </div>
           </div>
         </div>   

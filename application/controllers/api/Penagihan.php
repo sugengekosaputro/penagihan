@@ -11,6 +11,7 @@ class Penagihan extends REST_Controller {
 	{
 		parent::__construct();
 		$this->load->model('penagihan_model');
+		$this->load->model('pelanggan_model');
 		$this->load->model('tagihan_model');
     }
     
@@ -39,6 +40,47 @@ class Penagihan extends REST_Controller {
 			}
 		}
   }
+
+  public function notaAwal_get()
+	{
+		$id_order = $this->uri->segment(4);
+		$listbarang = $this->penagihan_model->tampilListBarang($id_order);
+		$pelanggan = $this->penagihan_model->tampilPelanggan($id_order);
+		$jumlah = $this->penagihan_model->tampilJumlah($id_order);
+
+		$data = array(
+			'pelanggan' => $pelanggan,
+			'listbarang' => $listbarang,
+			'jumlah' => $jumlah,
+		);
+		$this->response($data,REST_Controller::HTTP_OK);
+		
+	}
+
+	public function notaAkhir_get()
+	{
+		$id_order = $this->uri->segment(4);
+		$listbarang = $this->penagihan_model->tampilListBarangSJ($id_order);
+		$pelanggan = $this->penagihan_model->tampilPelanggan($id_order);
+		$pembayaran = $this->penagihan_model->tampilPembayaran($id_order);
+
+		foreach($listbarang as $res){
+			$hargabarang[] = $res->harga * $res->dikirim; 
+		}
+
+		$jumlah = array_sum($hargabarang);
+		$data = array(
+			'listbarang' => $listbarang,
+			'pelanggan' => $pelanggan,
+			'pembayaran' => array(	'id_pembayaran' => $pembayaran->id_order,
+									'id_pembayaran' => $pembayaran->id_pembayaran,
+									'jumlah'=>$jumlah,
+								    'dibayar'=>$pembayaran->dibayar),
+		);
+		$this->response($data,REST_Controller::HTTP_OK);
+		
+	}
+
 
   public function riwayat_get()
 	{

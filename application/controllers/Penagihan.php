@@ -54,12 +54,40 @@ class Penagihan extends CI_Controller {
 
 	public function pdfview()
 	{
-		$this->load->view('pdf_view');
+		$this->load->view('email/pdf_view');
+	}
+
+	public function notaAwal()
+	{
+		$id_order = $this->uri->segment(3);
+		$res = json_decode($this->guzzle_get(base_url().'api/','penagihan/notaAwal/'.$id_order));
+		$this->data['pelanggan'] = $res->pelanggan;
+		$this->data['listbarang'] = $res->listbarang;
+		$this->data['jumlah'] = $res->jumlah;
+		$this->load->view('email/nota_awal',$this->data);
+		// echo json_encode($res);
+	}
+
+	public function notaAkhir()
+	{
+		$id_order = $this->uri->segment(3);
+		$res = json_decode($this->guzzle_get(base_url().'api/','penagihan/notaAkhir/'.$id_order));
+		$this->data['pelanggan'] = $res->pelanggan;
+		$this->data['listbarang'] = $res->listbarang;
+		$this->data['pembayaran'] = $res->pembayaran;
+		$this->load->view('email/nota_akhir',$this->data);
+		// echo json_encode($res);
 	}
 	
 	public function cetakPdf()
 	{ 
-		$view = $this->load->view('pdf_view');
+		$id_order = $this->uri->segment(3);
+		$res = json_decode($this->guzzle_get(base_url().'api/','penagihan/notaAwal/'.$id_order));
+		$this->data['pelanggan'] = $res->pelanggan;
+		$this->data['listbarang'] = $res->listbarang;
+		$this->data['jumlah'] = $res->jumlah;
+
+		$view = $this->load->view('email/nota_awal', $this->data);
 		$html = $this->output->get_output($view);
 		$this->load->library('pdf');
 		# code...
@@ -75,10 +103,10 @@ class Penagihan extends CI_Controller {
 	
 	public function templateEmail()
 	{
-		$id_order = '37';
+		$id_order = '190111007';
 		$data['data'] = json_decode($this->guzzle_get(base_url().'api/','penagihan/'.$id_order));
 
-		$this->load->view('penagihan/email_view',$data);
+		$this->load->view('email/email_view',$data);
 	}
 
     public function notifEmail($id_order)
@@ -89,7 +117,7 @@ class Penagihan extends CI_Controller {
 			$email = $pelanggan->email;
 			$nota = 'Nota '.$pelanggan->nama_pelanggan.'.pdf';
 		}
-		$view = $this->load->view('pdf_view');
+		$view = $this->load->view('email/pdf_view');
 		$html = $this->output->get_output($view);
 		$this->load->library('pdf');
 		# code...
@@ -127,7 +155,7 @@ class Penagihan extends CI_Controller {
             $this->email->subject('UD. BILLY BOX BANGIL');
 
 			// Isi email
-			$body = $this->load->view('penagihan/email_view',$data,true) ;
+			$body = $this->load->view('email/email_view',$data,true) ;
             $this->email->message($body,"inline");
 
             // Tampilkan pesan sukses atau error
@@ -154,24 +182,26 @@ class Penagihan extends CI_Controller {
 
 	public function guzzle_get($url,$uri)
 	{
-		$client = new GuzzleHttp\Client(['base_uri' => $url]);
-		$response = $client->request('GET',$uri);
-		return $response->getBody();
+		try{
+			$client = new GuzzleHttp\Client(['base_uri' => $url]);
+			$response = $client->request('GET',$uri);
+			return $response->getBody();
+		}catch(GuzzleHttp\Exception\ClientException $e){
+			$response = $e->getResponse();
+			$responseBodyAsString = $response->getBody();
+			return null;
+		}
 	}
 
 	public function guzzle_post($url,$uri,$body)
 	{
-		try{
+		
 			$client = new GuzzleHttp\Client(['base_uri' => $url]);
 			$response = $client->request('POST',$uri,[
 				'form_params' => $body,
 			]);
 			return $response->getBody();
-		}catch(GuzzleHttp\Exception\ClientException $e){
-			$response = $e->getResponse();
-			$responseBodyAsString = $response->getBody()->getContents();
-			redirect('pemesanan','refresh');
-		}
+		
 	}
 
 	public function guzzle_put($url,$uri,$body)
