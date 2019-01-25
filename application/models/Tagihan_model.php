@@ -11,20 +11,32 @@ class Tagihan_model extends CI_Model {
 	{
 		$this->db->select('
 		tb_tagihan.id_tagihan,tb_tagihan.no_sj,SUM(tb_tagihan.dikirim) as total,tb_tagihan.tanggal,
+
 		');
 		$this->db->where_in('tb_tagihan.id_detail_order', $arrayId);
 		$this->db->group_by('tb_tagihan.no_sj');
 		$query = $this->db->get($this->tb_tagihan);
+
 		if ($query->num_rows() > 0) {
 			$result = array();
 			foreach($query->result() as $key => $val){
-				$query2 = $this->db->where('tb_tagihan.no_sj',$val->no_sj)->get($this->tb_tagihan);
+				$this->db->select('tb_tagihan.*,(tb_detail_order_rev.harga * tb_tagihan.dikirim) as bayar,
+				tb_master_barang.nama_barang')
+				->where('tb_tagihan.no_sj',$val->no_sj)
+				->join('tb_detail_order_rev','tb_detail_order_rev.id_detail_order = tb_tagihan.id_detail_order')
+				->join('tb_master_barang','tb_detail_order_rev.id_barang = tb_master_barang.id_barang');
+
+				$query2 = $this->db->get($this->tb_tagihan);
+				foreach($query2->result() as $k => $v){
+					$get_hrg[] = $v->bayar;
+				}
 				
 				$array[] = array(
-					'no_sj'=>$val->no_sj,
-					'tanggal'=>$val->tanggal,
-					'total'=> $val->total,
-					'list'=>$query2->result());
+					'no_sj' => $val->no_sj,
+					'tanggal' => $val->tanggal,
+					'total' => $val->total,
+					'harga' => array_sum($get_hrg),
+					'list'=> $query2->result());
 			}
 			return $array;
 		} else {

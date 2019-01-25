@@ -49,7 +49,6 @@ class Pemesanan extends REST_Controller {
 		$data = array(
 			'pelanggan' => $pelanggan,
 			'order' => $order,
-//			'order_list' => $order_list,
 			'pembayaran' => $pembayaran,
 			'surat_jalan' => array('history' => $surat_jalan),
 		);
