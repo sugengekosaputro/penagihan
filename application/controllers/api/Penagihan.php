@@ -66,11 +66,14 @@ class Penagihan extends REST_Controller {
 
 		foreach($listbarang as $res){
 			$hargabarang[] = $res->harga * $res->dikirim; 
+			$tanggalkirimarr[] = $res->tanggalkirim;
+			
 		}
 
 		$jumlah = array_sum($hargabarang);
 		$data = array(
 			'listbarang' => $listbarang,
+			'tanggalkirim' => end($tanggalkirimarr),
 			'pelanggan' => $pelanggan,
 			'pembayaran' => array(	'id_pembayaran' => $pembayaran->id_order,
 									'id_pembayaran' => $pembayaran->id_pembayaran,

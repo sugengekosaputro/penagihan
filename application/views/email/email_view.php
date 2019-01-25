@@ -316,14 +316,14 @@
                     <tr valign="top">          
                       <td align="left">
                       <p>Yth :</p> 
-                      <?php foreach($data as $data){ 
-                        echo "<p> $data->nama_pelanggan </p>"; }?>
+                      <?php 
+                        echo "<p> $pelanggan->nama_pelanggan </p>";
+                      ?>
                         <p>Silahkan download nota anda dibawah ini</p>
                         <img widht="100px" height="100px" src="http://fabinur.000webhostapp.com/assets/images/telunjuk.png"/>
                       </td>
                       <td align="right">
-                        <p>Tanggal :</p> 
-                        <p><?php echo date('Y-m-d'); ?></p>
+                        <p>Tanggal : <?php echo date('d-m-Y'); ?></p>
                       </td>
                     </tr>
                   </table>

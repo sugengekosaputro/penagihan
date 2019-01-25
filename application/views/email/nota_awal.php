@@ -9,12 +9,19 @@
     <script src="main.js"></script>
 </head>
 <body>
-
 <table border="0"  style="width:100%;">
   <tr valign="top" align="left">
-    <th style="width:25%"><img width="220px" height="70px" src="<?php echo base_url('assets/images/udbbbicon.png'); ?>" alt="UDBBB"></th>
-    <th style="width:45%;padding-top:5%;padding-bottom:1%;" align="center"><a style="font-size:20px"><u>Nota Pemesanan</th>
-    <th style="width:30%">Pasuruan &emsp; <?php echo date('Y-m-d');?></th>
+    <th style="width:10%"><img width="220px" height="70px" src="<?php echo base_url('assets/images/udbbbicon.png'); ?>" alt="UDBBB"></th>
+    <th style="width:40%;padding-top:5%;padding-bottom:1%;" align="center"><a style="font-size:20px"><u>Nota Pemesanan</th>
+    <th style="width:50%">Pasuruan &emsp; <?php echo date('d-m-Y');?></th>
+  </tr>
+</table>
+<br>
+<table border="0"  style="width:100%;">
+    <tr valign="top" align="left">
+    <th style="width:10%"></th>
+    <th style="width:60%"></th>
+    <th style="width:30%"></th>
   </tr>
   <tr valign="top">
     <td>Office</td>
@@ -57,12 +64,12 @@
   </tr>
   <?php foreach($listbarang as $list){?> 
   <tr  style="border-bottom:1pt solid white;" valign="top">
-      <td style="border-bottom:1pt solid white; "><?php echo $list->tanggal_order;?></td>
+      <td style="border-bottom:1pt solid white; "><?php echo date('d-m-Y',strtotime($list->tanggal_order));?></td>
       <td style="border-bottom:1pt solid white; " align="right"><?php echo $list->jumlah;?></td>
       <td style="border-bottom:1pt solid white;" align="left"><?php echo $list->satuan;?></td>
       <td style="border-bottom:1pt solid white; "><?php echo $list->nama_barang;?></td>
-      <td style="border-bottom:1pt solid white; "><?php echo $list->harga;?></td>
-      <td style="border-bottom:1pt solid white; "><?php echo $list->harga * $list->jumlah;?></td>
+      <td style="border-bottom:1pt solid white; "><?php echo 'Rp. '.number_format($list->harga);?></td>
+      <td style="border-bottom:1pt solid white; "><?php echo 'Rp. '.number_format($list->harga * $list->jumlah);?></td>
   </tr>
   <?php } ?>
 
@@ -80,7 +87,7 @@
       <td style="border:1pt solid white; border-top:1pt solid black; padding-top:20px" align="left"></td>
       <td style="border:1pt solid white; border-top:1pt solid black;border-right:1pt solid black;">acc transf: bca 2250531306</td>
       <td style="border-bottom:1pt solid black; ">Jumlah</td>
-      <td style="border-bottom:1pt solid black; "><?php echo 'Rp. '.$jumlah->total_bayar;?></td>
+      <td style="border-bottom:1pt solid black; "><?php echo 'Rp. '.number_format($jumlah->total_bayar);?></td>
   </tr>
   <tr  style="border-bottom:1pt solid white;padding-top:20px" valign="top">
       <td style="border:1pt solid white; border-top:1pt solid black; padding-top:20px"></td>
@@ -88,7 +95,7 @@
       <td style="border:1pt solid white; border-top:1pt solid black; padding-top:20px" align="left"></td>
       <td style="border:1pt solid white; border-top:1pt solid black;border-right:1pt solid black;">A.n : Subani</td>
       <td style="border-bottom:1pt solid black; ">diBayar</td>
-      <td style="border-bottom:1pt solid black; ">Rp. 0</td>
+      <td style="border-bottom:1pt solid black; "><?php echo 'Rp. '.number_format($jumlah->dp); ?></td>
   </tr>
   <tr  style="border-bottom:1pt solid white;padding-top:20px" valign="top">
       <td style="border:1pt solid white; border-top:1pt solid black;"></td>
@@ -96,7 +103,7 @@
       <td style="border:1pt solid white; border-top:1pt solid black; padding-top:20px" align="left"></td>
       <td style="border:1pt solid white; border-top:1pt solid black;border-right:1pt solid black;padding-top:20px"></td>
       <td style="border-bottom:1pt solid black; background-color:yellow">Dp 50%</td>
-      <td style="border-bottom:1pt solid black; background-color:yellow"><?php echo 'Rp. '.$jumlah->total_bayar / 2;?></td>
+      <td style="border-bottom:1pt solid black; background-color:yellow"><?php echo 'Rp. '.number_format($jumlah->total_bayar / 2);?></td>
   </tr>
   <tr  style="border-bottom:1pt solid white;padding-top:20px" valign="top">
       <td style="border:1pt solid white; border-top:1pt solid black;"></td>

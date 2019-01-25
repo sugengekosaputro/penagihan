@@ -73,6 +73,7 @@ class Penagihan extends CI_Controller {
 		$id_order = $this->uri->segment(3);
 		$res = json_decode($this->guzzle_get(base_url().'api/','penagihan/notaAkhir/'.$id_order));
 		$this->data['pelanggan'] = $res->pelanggan;
+		$this->data['tanggalkirim'] = $res->tanggalkirim;
 		$this->data['listbarang'] = $res->listbarang;
 		$this->data['pembayaran'] = $res->pembayaran;
 		$this->load->view('email/nota_akhir',$this->data);
@@ -109,15 +110,19 @@ class Penagihan extends CI_Controller {
 		$this->load->view('email/email_view',$data);
 	}
 
-    public function notifEmail($id_order)
+    public function notifEmail()
     {
-		$data['data'] = json_decode($this->guzzle_get(base_url().'api/','penagihan/'.$id_order));
-		$pelanggan = json_decode($this->guzzle_get(base_url().'api/','penagihan/'.$id_order));
-        foreach($pelanggan as $pelanggan){ 
-			$email = $pelanggan->email;
-			$nota = 'Nota '.$pelanggan->nama_pelanggan.'.pdf';
-		}
-		$view = $this->load->view('email/pdf_view');
+		$id_order = $this->uri->segment(3);
+		$res = json_decode($this->guzzle_get(base_url().'api/','penagihan/notaAwal/'.$id_order));
+		$this->data['pelanggan'] = $res->pelanggan;
+		$this->data['listbarang'] = $res->listbarang;
+		$this->data['jumlah'] = $res->jumlah;
+		$pelanggan = $res->pelanggan;
+
+	    $email = $pelanggan->email;
+		$nota = 'Nota '.$pelanggan->nama_pelanggan.'.pdf';
+
+		$view = $this->load->view('email/nota_awal',$this->data);
 		$html = $this->output->get_output($view);
 		$this->load->library('pdf');
 		# code...
@@ -134,35 +139,32 @@ class Penagihan extends CI_Controller {
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
             'smtp_user' => 'fabinurcahyo@gmail.com',
-						'smtp_pass' => 'fabiituindah8888', 
-						'mailtype'	=> 'html',
-						'charset'   => 'utf-8',
-						'newline'	=> "\r\n",
-	        	'wordwrap' => TRUE
+			'smtp_pass' => 'fabiituindah8888', 
+			'mailtype'	=> 'html',
+			'charset'   => 'utf-8',
+			'newline'	=> "\r\n",
+	        'wordwrap' => TRUE
 		 );
-					$filename = base_url('assets/upload/telunjuk.png');
-									// Load library email dan konfigurasinya
-						$this->load->library('email');
-						$this->email->initialize($config);
+			$filename = base_url('assets/upload/telunjuk.png');
+				// Load library email dan konfigurasinya
+			$this->load->library('email');
+			$this->email->initialize($config);
             $this->email->attach($output,'application/pdf',$nota,false);
             // Email dan nama pengirim
             $this->email->from('fabinurcahyo@gmail.com','fabi nur cahyo');
-
             // Email penerima
             $this->email->to($email);
-
             // Subject email
             $this->email->subject('UD. BILLY BOX BANGIL');
-
 			// Isi email
-			$body = $this->load->view('email/email_view',$data,true) ;
+			$body = $this->load->view('email/email_view',$this->data,true) ;
             $this->email->message($body,"inline");
 
             // Tampilkan pesan sukses atau error
             if ($this->email->send()) {
                 echo 'Sukses! email berhasil dikirim.';
                 $this->session->set_flashdata("success", "<div class=\"alert\"> <span id=\"alert\" class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>Notifikasi email berhasil dikirim..</div>");
-                redirect('penagihan');
+                redirect('pemesanan');
             } else {
                 show_error($this->email->print_debugger());
             }

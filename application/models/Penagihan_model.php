@@ -57,7 +57,7 @@ class Penagihan_model extends CI_Model {
 
 	public function tampilListBarangSJ($id_order)
 	{	
-		$this->db->select("tb_order_rev.*, tb_detail_order_rev.*, tb_tagihan.id_detail_order, sum(tb_tagihan.dikirim) as dikirim, tb_master_barang.*, tb_kategori_barang.*");
+		$this->db->select("tb_order_rev.*, tb_detail_order_rev.*, tb_tagihan.id_detail_order, tb_tagihan.tanggal as tanggalkirim, sum(tb_tagihan.dikirim) as dikirim, tb_master_barang.*, tb_kategori_barang.*");
 		$this->db->distinct('tb_tagihan.id_detail_order');
 		$this->db->join('tb_detail_order_rev','tb_detail_order_rev.id_order = tb_order_rev.id_order');
 		$this->db->join('tb_tagihan','tb_tagihan.id_detail_order = tb_detail_order_rev.id_detail_order');
