@@ -20,9 +20,11 @@ class Tagihan_model extends CI_Model {
 		if ($query->num_rows() > 0) {
 			$result = array();
 			foreach($query->result() as $key => $val){
-				$this->db->select('tb_tagihan.*,(tb_detail_order_rev.harga * tb_tagihan.dikirim) as bayar')
+				$this->db->select('tb_tagihan.*,(tb_detail_order_rev.harga * tb_tagihan.dikirim) as bayar,
+				tb_master_barang.nama_barang')
 				->where('tb_tagihan.no_sj',$val->no_sj)
-				->join('tb_detail_order_rev','tb_detail_order_rev.id_detail_order = tb_tagihan.id_detail_order');
+				->join('tb_detail_order_rev','tb_detail_order_rev.id_detail_order = tb_tagihan.id_detail_order')
+				->join('tb_master_barang','tb_detail_order_rev.id_barang = tb_master_barang.id_barang');
 
 				$query2 = $this->db->get($this->tb_tagihan);
 				foreach($query2->result() as $k => $v){
