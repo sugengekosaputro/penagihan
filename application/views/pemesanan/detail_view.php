@@ -106,7 +106,7 @@
           </div>
           <div class="x_content">
           <a href="<?php echo site_url('pemesanan/surat_jalan/'.$order->id_order) ?>" class="btn btn-warning"><span class="fa fa-edit">&nbsp</span>Surat Jalan</a>
-            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+            <!-- <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
               <thead>
                 <tr>
                   <th>No.Surat Jalan</th>
@@ -116,16 +116,56 @@
                 </tr>
               </thead>
               <tbody>
-              <?php foreach($list as $list){ ?>
+              <?php// foreach($list as $list){ ?>
                 <tr>
-                  <td><?php echo $list->no_sj ?></td>
-                  <td><?php echo $list->total ?></td>
-                  <td><?php echo $list->tanggal ?></td>
-                  <td><a href="<?php// echo site_url('tagihan/detail/'.$id_order.'/'.$tagihan->no_sj)?>" class="btn btn-primary btn-sm"><span class="fa fa-arrow-left">&nbsp</span>Lihat Rincian</a></td>
+                  <td><?php// echo $list->no_sj ?></td>
+                  <td><?php// echo $list->total ?></td>
+                  <td><?php// echo $list->tanggal ?></td>
+                  <td></td>
                 </tr>
-                <?php } ?>
+                <?php// } ?>
               </tbody>
-            </table>
+            </table> -->
+
+            <?php foreach($list as $key => $val){ ?>
+              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="heading<?php echo $key ?>">
+                    <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $key ?>" aria-expanded="true" aria-controls="collapse<?php echo $key ?>">
+                        <?php echo $val->no_sj ?>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapse<?php echo $key ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?php echo $key ?>">
+                    <div class="panel-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Nama Barang</th>
+                              <th>Jumlah</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach($val->list as $k => $v){ ?>
+                              <tr>
+                                <th><?php echo $v->id_detail_order ?></th>
+                                <th><?php echo $v->dikirim ?></th>
+                              </tr>
+                            <?php } ?>
+                          </tbody>
+                        </table>
+                        <hr>
+                        <h4>Harga Bayar : Rp <?php echo $val->harga ?></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php }?>
+
+
             <p class="text-muted font-13 m-b-30">
               <a href="<?php echo site_url('pemesanan')?>" class="btn btn-primary"><span class="fa fa-arrow-left">&nbsp</span>Kembali</a>
             </p>
