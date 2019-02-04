@@ -41,7 +41,7 @@ class Penagihan extends REST_Controller {
 		}
   }
 
-  public function notaAwal_get()
+  public function notaPemesanan_get()
 	{
 		$id_order = $this->uri->segment(4);
 		$listbarang = $this->penagihan_model->tampilListBarang($id_order);
@@ -57,7 +57,7 @@ class Penagihan extends REST_Controller {
 		
 	}
 
-	public function notaAkhir_get()
+	public function notaPelunasan_get()
 	{
 		$id_order = $this->uri->segment(4);
 		$listbarang = $this->penagihan_model->tampilListBarangSJ($id_order);
@@ -75,7 +75,7 @@ class Penagihan extends REST_Controller {
 			'listbarang' => $listbarang,
 			'tanggalkirim' => end($tanggalkirimarr),
 			'pelanggan' => $pelanggan,
-			'pembayaran' => array(	'id_pembayaran' => $pembayaran->id_order,
+			'pembayaran' => array(	'id_order' => $pembayaran->id_order,
 									'id_pembayaran' => $pembayaran->id_pembayaran,
 									'jumlah'=>$jumlah,
 								    'dibayar'=>$pembayaran->dibayar),

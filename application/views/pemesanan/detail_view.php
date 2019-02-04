@@ -68,7 +68,7 @@
               <h4>Status Order : <label> <?php echo $order->status_order ?></label></h4>
               <h4>Status Bayar : <label> <?php echo 'OK_FINE'//echo $pembayaran->status_pembayaran ?></label></h4>
               <a href="#" class="btn btn-primary input-pembayaran"><span class="fa fa-shopping-cart"> &nbsp</span>Input Pembayaran</a>
-              <a href="<?php echo base_url('').$order->id_order; ?>" class="btn btn-primary"><span class="fa fa-shopping-cart"> &nbsp</span>Kirim email</a>
+              <a href="<?php echo base_url('penagihan/notifemail').$order->id_order; ?>" class="btn btn-success"><span class="fa fa-envelope"> &nbsp</span>Kirim email</a>
             </div>
           </div>
         </div>   
@@ -174,25 +174,38 @@
       <form class="form-horizontal form-label-left input_mask" enctype="multipart/form-data" action="<?php echo site_url('pemesanan/pembayaran')?>" method="POST">
         <div class="modal-body">
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-              <input name="id_order" value="<?php //echo $dt->id_order ?>" hidden>
-              <input name ="id_pembayaran" value="<?php //echo $dt->id_pembayaran ?>" hidden>
-              <input name ="dp" value="<?php// echo $dt->dp ?>" hidden>
-              <input name ="total_bayar" value="<?php //echo $dt->total_bayar ?>" hidden>
-              <input type="number" name="dibayar" class="form-control has-feedback-left" id="inputSuccess2" placeholder="total bayar">
+              <!--hide-->
+              <input name="id_order" value="<?php echo $order->id_order ?>" hidden>
+              <input name ="id_pembayaran" value="<?php echo $pembayaran->id_pembayaran ?>" hidden>
+              <input name ="dp" value="<?php echo $pembayaran->dp ?>" hidden>
+              <!-- <input name ="total_bayar" value="<?php echo $pembayaran->total_bayar ?>" hidden> -->
+              <!-- -->
+              <input type="number" name="dibayar" class="form-control has-feedback-left" id="dibayar" placeholder="total bayar">
               <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
           </div>
-          <!-- <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-             <div class="radio">
-                <label>
-                  <input type="radio" class="flat" checked value="Baru" name="check"> Baru
-                </label>
+          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+           <label class="col-md-6 col-sm-6 col-xs-12 control-label">status pengiriman</label>
+           <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="radio">
+                  <label>
+                    <input type="radio" class="flat" value="Baru" name="status_order" <?php if($order->status_order=='baru'){echo 'checked';} ?>> 
+                    Baru
+                  </label>
+                </div>
+                <div class="radio">  
+                  <label>
+                    <input type="radio" class="flat" value="diproses" name="status_order" <?php if($order->status_order=='diproses'){echo 'checked';} ?>> 
+                    Diproses
+                  </label>
+                </div>
+                <div class="radio">  
+                  <label>
+                    <input type="radio" class="flat" value="selesai" name="status_order" <?php if($order->status_order=='selesai'){echo 'checked';} ?>> 
+                    Selesai
+                  </label>
+                </div>
               </div>
-             <div class="radio">  
-                <label>
-                  <input type="radio" class="flat" value="diproses" name="check"> Diproses
-                </label>
-              </div>
-          </div> -->
+          </div>
           <div class="form-group">
 
           </div>

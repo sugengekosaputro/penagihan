@@ -80,26 +80,90 @@ class Pemesanan extends CI_Controller {
 			'status' => 'Baru',
 		];
 		//echo json_encode($body);
-		$response = json_decode($this->guzzle_post(base_url().'api/','pemesanan',$body));		
+		$response = json_decode($this->guzzle_post(base_url().'api/','pemesanan',$body));	
+		// $this->notifEmailPemesanan($id_order);	
 		if($response->status){
 			echo json_encode($response);
-		}else{
+		}else{			
 			redirect('pemesanan','refresh');
 		}
 	}
+	public function coba()
+	{
+		# code...
+		$id_order = '190111007';
+		$this->notifEmailPemesanan($id_order);
+	}
+
+	public function notifEmailPemesanan($id_order)
+    {
+		// $id_order = $this->uri->segment(3);
+		$res = json_decode($this->guzzle_get(base_url().'api/','penagihan/notaPemesanan/'.$id_order));
+		$this->data['pelanggan'] = $res->pelanggan;
+		$this->data['listbarang'] = $res->listbarang;
+		$this->data['jumlah'] = $res->jumlah;
+		$pelanggan = $res->pelanggan;
+
+	    $email = $pelanggan->email;
+		$nota = 'Nota '.$pelanggan->nama_pelanggan.'.pdf';
+		$view = $this->load->view('email/nota_awal',$this->data);
+		$html = $this->output->get_output($view);
+		$this->load->library('pdf');
+		# code...
+		$this->dompdf->load_html($html);
+		$this->dompdf->set_paper('A4','portrait');
+		// Render the HTML as PDF
+		$this->dompdf->render();
+		$output= $this->dompdf->output();
+
+         // Konfigurasi email
+         $config = Array(
+            'protocol'  => 'smtp',
+            'mailpath'  => '/usr/sbin/sendmail',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'fabinurcahyo@gmail.com',
+			'smtp_pass' => 'fabiituindah8888', 
+			'mailtype'	=> 'html',
+			'charset'   => 'utf-8',
+			'newline'	=> "\r\n",
+	        'wordwrap' => TRUE
+		 );
+			$filename = base_url('assets/upload/telunjuk.png');
+				// Load library email dan konfigurasinya
+			$this->load->library('email');
+			$this->email->initialize($config);
+            $this->email->attach($output,'application/pdf',$nota,false);
+            // Email dan nama pengirim
+            $this->email->from('fabinurcahyo@gmail.com','fabi nur cahyo');
+            // Email penerima
+            $this->email->to($email);
+            // Subject email
+            $this->email->subject('UD. BILLY BOX BANGIL');
+			// Isi email
+			$body = $this->load->view('email/email_view',$this->data,true) ;
+            $this->email->message($body,"inline");
+
+            // Tampilkan pesan sukses atau error
+            if ($this->email->send()) {
+                return true;
+            } else {
+                return false;
+            }
+    }
 
 	public function pembayaran()
 	{
-		$totaldp = $this->input->post('dp') + $this->input->post('dibayar');
-
+		// $totaldp = $this->input->post('dp') + $this->input->post('dibayar');
+		
 		$body = [
 			'id_order' => $this->input->post('id_order'),
 			'id_pembayaran' => $this->input->post('id_pembayaran'),
-			'total_bayar' => $this->input->post('total_bayar'),
-			'dp' => $totaldp,
+			// 'total_bayar' => $this->input->post('total_bayar'),
+			// 'dp' => $totaldp,
 			'dibayar' => $this->input->post('dibayar'),
 			'tanggal' => date('y-m-d'),
-			'status_pembayaran' => 'DP',
+			'status_order' => $this->input->post('status_order'),
 		];
         $response = json_decode($this->guzzle_post(base_url().'api/','pemesanan/pembayaran',$body));
         if($response->status){
